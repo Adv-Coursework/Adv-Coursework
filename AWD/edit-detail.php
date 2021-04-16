@@ -54,7 +54,7 @@ if ($res = $mysqli->query("SELECT title,imageurl,comment FROM photo WHERE idphot
 		<img src=" <?= $image["imageurl"]?>" alt="<?=$image["title"]?>"
 			height="600" />
 
-		<!--Obtain data from user for updating purpsoe-->
+		<!--Obtain data from user for updating purpose-->
 		<!--Create a form for user input-->
 		<div id="edit-input-container">
 		<form action="update-detail.php" method="post" enctype="multipart/form-data">
