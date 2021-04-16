@@ -22,6 +22,13 @@ body, html {
 </style>
 </head>
 
+<?php
+  include 'connection.php';
+  session_start();
+$id=$_SESSION['iduser'];
+$query=mysqli_query($db,"SELECT * FROM users where iduser='$id'")or die(mysqli_error());
+$row=mysqli_fetch_array($query);
+  ?>
 <body>
 
 	<!-- Top navigator -->
@@ -43,32 +50,32 @@ body, html {
 
 		<div id="edit-profile" class="tabcontent">
 
-			<form action="profile.php" method="post"
+			<form action="#" method="post"
 				enctype="multipart/form-data">
 				<h3>Edit Profile</h3>
 				<label>Username :</label> <input type="text" id="username"
-					name="username"><br>
+					name="Uname"><br>
 				<br> <label>E-mail :</label> <input type="text" id="email"
-					name="email"><br>
-				<br> <input type="submit" value="Submit" class="user-submit">
+					name="Email"><br>
+				<br> <input type="submit" name="submit-1" value="Submit" class="user-submit">
 			</form>
 		</div>
 
 		<div id="edit-passwrd" class="tabcontent">
-			<form action="profile.php" method="post"
-				enctype="multipart/form-data">
+			<form name="frmChange" method="post" action="" onSubmit="return validatePassword()">
 				<h3>Edit Password</h3>
-				<label>Old Password :</label> <input type="text" id="old-passwrd"
-					name="old-passwrdd"><br>
+				<label>Old Password :</label> <input type="text" id="old-password"
+					name="old-password"><br>
 				<br> <label>New Password :</label> <input type="text"
-					id="new-passwrd" name="new-passwrd"><br>
+					id="new-password" name="new-password"><br>
 				<br> <label>Confirm Password :</label> <input type="text"
-					id="confirm-passwrd" name="confirm-passwrd"><br>
-				<br> <input type="submit" value="Submit" class="user-submit">
+					id="confirm-password" name="confirm-password"><br>
+				<br> <input type="submit" name="submit-2" value="Submit" class="user-submit">
 			</form>
 		</div>
 	</div>
 
+<?php /*tab function*/?>
 <script>
 function openStatus(evt, statusName) {
   var i, tabcontent, tablinks;
@@ -86,6 +93,41 @@ function openStatus(evt, statusName) {
 
 // Get the element with id="defaultOpen" and click on it
 document.getElementById("defaultOpen").click();
+</script>
+
+<?php /*validate password*/?>
+<script>
+function validatePassword() {
+var old-password,new-password,confirm-password,output = true;
+
+old-password = document.frmChange.old-password;
+new-password = document.frmChange.new-password;
+confirm-password = document.frmChange.confirm-password;
+
+if(!old-password.value) {
+old-password.focus();
+document.getElementById("old-password").innerHTML = "required";
+output = false;
+}
+else if(!new-password.value) {
+new-password.focus();
+document.getElementById("new-password").innerHTML = "required";
+output = false;
+}
+else if(!confir-password.value) {
+confirm-password.focus();
+document.getElementById("confirm-password").innerHTML = "required";
+output = false;
+}
+if(new-password.value != confirm-password.value) {
+new-password.value="";
+confirm-password.value="";
+new-password.focus();
+document.getElementById("confirm-password").innerHTML = "not same";
+output = false;
+} 	
+return output;
+}
 </script>
 
 <!-- Footer -->
@@ -112,7 +154,38 @@ document.getElementById("defaultOpen").click();
 			<p>Monday to Saturday</p>
 		</div>
 	</footer>
-
 </body>
 </html>
-gdg
+
+<?php
+      if(isset($_POST['submit-1'])){
+        $username = $_POST['Uname'];
+        $email = $_POST['Email'];
+      $query = "UPDATE users SET username = '$username',
+                      email = '$email'
+                      WHERE iduser = '$id'";
+                      $result = mysqli_query($db, $query) or die(mysqli_error($db));
+      ?>
+        <script type="text/javascript">
+            alert("Update Successfull.");
+            window.location = "edit-acc.php";
+        </script>
+        <?php
+             }              
+?>
+
+<?php
+session_start();
+$_SESSION["userId"] = "9";
+$db = mysqli_connect("localhost", "root", "test", "blog_samples") or die("Connection Error: " . mysqli_error($conn));
+
+if (count($_POST) > 0) {
+    $result = mysqli_query($db, "SELECT *from users WHERE iduser='" . $_SESSION["iduser"] . "'");
+    $row = mysqli_fetch_array($result);
+    if ($_POST["old-password"] == $row["password"]) {
+        mysqli_query($db, "UPDATE users set password='" . $_POST["new-password"] . "' WHERE iduser='" . $_SESSION["iduser"] . "'");
+        $message = "Password Changed";
+    } else
+        $message = "Current Password is not correct";
+}
+?>
