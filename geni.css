@@ -68,30 +68,11 @@
   font-size: 18px;
 }
 
-#username{
+#username,#nickname,#gender,#email,#new-password,#confirm-password{
 	font-size:18px;
 	padding:5px 10px;
 }
 
-#email{
-	font-size:18px;
-	padding:5px 10px;
-}
-
-#old-passwrd{
-	font-size:18px;
-	padding:5px 10px;
-}
-
-#new-passwrd{
-	font-size:18px;
-	padding:5px 10px;
-}
-
-#confirm-passwrd{
-	font-size:18px;
-	padding:5px 10px;
-}
 
 .user-submit{
 	margin:0 45%;

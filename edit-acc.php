@@ -22,6 +22,7 @@ body, html {
 </style>
 </head>
 
+<!-- Retrieve data from user -->
 <?php
 include 'connection.php';
 session_start();
@@ -126,9 +127,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 			<form action="#" method="post" enctype="multipart/form-data">
 				<h3>Edit Profile</h3>
 				<label>Username :</label> 
-				<input type="text" id="username" name="Uname"><br> <br> 
+				<input type="text" id="username" name="Uname" value="<?= $row["username"]?>"><br> <br> 
+				<label>Nickname :</label> 
+				<input type="text" id="nickname" name="Nname" value="<?= $row["nickname"]?>"><br> <br> 
+				<label>Gender :</label> 
+				<input type="text" id="gender" name="Gender" value="<?= $row["gender"]?>"><br> <br> 
 				<label>E-mail :</label> 
-				<input type="text" id="email" name="Email"><br> <br> 
+				<input type="email" id="email" name="Email" value="<?= $row["email"]?>"><br> <br> 
 				<input type="submit" name="submit-1" value="Submit" class="user-submit">
 			</form>
 		</div>
@@ -204,11 +209,13 @@ document.getElementById("defaultOpen").click();
 if (isset($_POST['submit-1'])) {
     $username = $_POST['Uname'];
     $email = $_POST['Email'];
+    $nickname=$_POST['Nname'];
+    $gender=$_POST['Gender'];
     $query = "UPDATE users SET username = '$username',
-                      email = '$email'
+                      email = '$email', nickname='$nickname', gender='$gender'
                       WHERE iduser = '$id'";
     $result = mysqli_query($db, $query) or die(mysqli_error($db));
-    ?>
+       ?>
 <script type="text/javascript">
             alert("Update Successfull.");
             window.location = "edit-acc.php";
