@@ -107,9 +107,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 		<ul>
 			<li><a href="Instagraham_Inc.php">Home</a></li>
 			<li><a href="upload-form.html">Upload photo</a></li>
-			<li><a href="admin.php">Admin</a></li>
-			<li><a href="login-test.php">Login Page</a></li>
+			<li><a href="login-test.php">Login</a></li>
+			<li><a href="logout-test.php">Logout</a></li>
 			<li><a class="active" href="user-prof.php">User</a></li>
+			<li><a href="delete-account-page-test.php">Delete account</a></li>
 		</ul>
 	</div>
 

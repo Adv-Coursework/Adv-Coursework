@@ -1,4 +1,15 @@
 
+<?php 
+// Initialize the session
+session_start();
+
+// Check if the user is logged in, if not then redirect him to login page
+if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
+    echo "Please login to access to the page.";
+    exit;
+}
+
+?>
 <!DOCTYPE html>
 
 <html>
@@ -29,7 +40,6 @@ body, html {
 <!-- Retrieve data from user -->
 <?php
 include 'connection.php';
-session_start();
 $id = $_SESSION['iduser'];
 $query = mysqli_query($db, "SELECT * FROM users where iduser='$id'") or die(mysqli_error());
 $row = mysqli_fetch_array($query);
@@ -42,7 +52,10 @@ $row = mysqli_fetch_array($query);
 		<ul>
 			<li><a href="Instagraham_Inc.php">Home</a></li>
 			<li><a href="upload-form.html">Upload photo</a></li>
-			<li><a class="active" href="user-prof.html">User</a></li>
+			<li><a href="login-test.php">Login</a></li>
+			<li><a href="logout-test.php">Logout</a></li>
+			<li><a class="active" href="user-prof.php">User</a></li>
+			<li><a href="delete-account-page-test.php">Delete account</a></li>>
 		</ul>
 	</div>
 
