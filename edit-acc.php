@@ -152,7 +152,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 				<br> <input type="submit" class="user-submit" value="Submit">
 			</form>
 		</div>
-
+</div>
 
 		<!--tab function-->
 		<script>
