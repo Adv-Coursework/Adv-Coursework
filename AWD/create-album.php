@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 
 <html>
-<title>Upload photo</title>
+<title>Create album</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="css/Instagraham_style.css">
@@ -27,16 +27,14 @@ body, h1, h2, h3, h4, h5, h6 {
 	<div id="wrapper-system">
     <?php
     $uploadOk = FALSE;
-
+   
     // retreive user input
-    if (isset($_POST["submit"]) && $_POST["title"] != "") {
-        $editTitle = $_POST["title"];
-        $imageId = $_POST["id"];
-        $editComment = $_POST["comment"];
+    if (isset($_POST["submit"])) {
+        $album_name = $_POST["album_name"];
         $uploadOk = 1;
     }
-
-    // update to datebase
+    
+    //update to datebase
     if ($uploadOk == 1) {
         $mysqli = new mysqli("localhost", "root", "", "5114asst1");
         // if failed to connect to db
@@ -45,11 +43,11 @@ body, h1, h2, h3, h4, h5, h6 {
         }
 
         // Create query to update detail according to image id
-        $q = "UPDATE photo SET title = '" . $editTitle . "' , comment = '" . $editComment . "'WHERE idphoto = " . $imageId . ";";
+        $q = "INSERT INTO album (title) VALUES (" . $album_name . ") ";
 
         // If query executed or failed to do so
         if ($mysqli->query($q)) {
-            echo "<p>Update complete.</p>";
+            echo "<p>Album: ".$album_name."  created.</p>";
         } else {
             echo "<p>Something went wrong. Please contact your system adminstrator.</p>";
         }

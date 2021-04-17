@@ -27,7 +27,7 @@ if ($res = $mysqli->query("SELECT title,comment,imageurl,idphoto FROM photo;")) 
 <title>Home</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="Instagraham_style.css">
+<link rel="stylesheet" href="css/Instagraham_style.css">
 <link rel="stylesheet"
 	href="https://fonts.googleapis.com/css?family=Karma">
 <style>
@@ -45,6 +45,7 @@ body, h1, h2, h3, h4, h5, h6 {
 		<ul>
 			<li><a class="active" href="Instagraham_Inc.php">Home</a></li>
 			<li><a href="upload-form.html">Upload photo</a></li>
+			<li><a href="album.php">Albums</a></li>
 		</ul>
 
 	</div>
