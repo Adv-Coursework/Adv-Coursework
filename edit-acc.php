@@ -23,12 +23,82 @@ body, html {
 </head>
 
 <?php
-  include 'connection.php';
-  session_start();
-$id=$_SESSION['iduser'];
-$query=mysqli_query($db,"SELECT * FROM users where iduser='$id'")or die(mysqli_error());
-$row=mysqli_fetch_array($query);
-  ?>
+include 'connection.php';
+session_start();
+$id = $_SESSION['iduser'];
+$query = mysqli_query($db, "SELECT * FROM users where iduser='$id'") or die(mysqli_error());
+$row = mysqli_fetch_array($query);
+?>
+
+<!-- change password -->  
+<?php
+// Include config file
+require_once "config.php";
+
+// Define variables and initialize with empty values
+$new_password = $confirm_password = "";
+$new_password_err = $confirm_password_err = "";
+
+// Processing form data when form is submitted
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+    // Validate new password
+    if (empty(trim($_POST["new_password"]))) {
+        $new_password_err = "Please enter the new password.";
+    } elseif (strlen(trim($_POST["new_password"])) < 6) {
+        $new_password_err = "Password must have atleast 6 characters.";
+    } else {
+        $new_password = trim($_POST["new_password"]);
+    }
+
+    // Validate confirm password
+    if (empty(trim($_POST["confirm_password"]))) {
+        $confirm_password_err = "Please confirm the password.";
+    } else {
+        $confirm_password = trim($_POST["confirm_password"]);
+        if (empty($new_password_err) && ($new_password != $confirm_password)) {
+            $confirm_password_err = "Password did not match.";
+        }
+    }
+
+    // Check input errors before updating the database
+    if (empty($new_password_err) && empty($confirm_password_err)) {
+        // Prepare an update statement
+        $sql = "UPDATE users SET password = ? WHERE iduser = ?";
+
+        if ($stmt = mysqli_prepare($link, $sql)) {
+            // Bind variables to the prepared statement as parameters
+            mysqli_stmt_bind_param($stmt, "si", $param_password, $param_id);
+
+            // Set parameters
+            $param_password = password_hash($new_password, PASSWORD_DEFAULT);
+            $param_id = $_SESSION["iduser"];
+
+            // Attempt to execute the prepared statement
+            if (mysqli_stmt_execute($stmt)) {
+                // Password updated successfully. Destroy the session, and redirect to login page
+                session_destroy();
+                $message = 'Password changed succesfully.';
+                echo "<SCRIPT>
+                    alert('$message')
+                    window.location.replace('login-test.php');
+                </SCRIPT>";
+                exit();
+            } else {
+                echo "Oops! Something went wrong. Please try again later.";
+            }
+
+            // Close statement
+            mysqli_stmt_close($stmt);
+        }
+    }
+
+    // Close connection
+    mysqli_close($link);
+}
+?>
+ 
+
 <body>
 
 	<!-- Top navigator -->
@@ -36,10 +106,13 @@ $row=mysqli_fetch_array($query);
 		<ul>
 			<li><a href="Instagraham_Inc.php">Home</a></li>
 			<li><a href="upload-form.html">Upload photo</a></li>
-			<li><a class="active" href="user-prof.html">User</a></li>
+			<li><a href="admin.php">Admin</a></li>
+			<li><a href="login-test.php">Login Page</a></li>
+			<li><a class="active" href="user-prof.php">User</a></li>
 		</ul>
 	</div>
 
+	<!-- edit profile tab -->
 	<div class="content">
 		<div class="tab">
 			<button class="tablinks" onclick="openStatus(event, 'edit-profile')"
@@ -48,35 +121,35 @@ $row=mysqli_fetch_array($query);
 				Password</button>
 		</div>
 
+		<!-- edit username & email tab content -->
 		<div id="edit-profile" class="tabcontent">
-
-			<form action="#" method="post"
-				enctype="multipart/form-data">
+			<form action="#" method="post" enctype="multipart/form-data">
 				<h3>Edit Profile</h3>
-				<label>Username :</label> <input type="text" id="username"
-					name="Uname"><br>
-				<br> <label>E-mail :</label> <input type="text" id="email"
-					name="Email"><br>
-				<br> <input type="submit" name="submit-1" value="Submit" class="user-submit">
+				<label>Username :</label> 
+				<input type="text" id="username" name="Uname"><br> <br> 
+				<label>E-mail :</label> 
+				<input type="text" id="email" name="Email"><br> <br> 
+				<input type="submit" name="submit-1" value="Submit" class="user-submit">
 			</form>
 		</div>
 
+		<!-- edit password tab content -->
 		<div id="edit-passwrd" class="tabcontent">
-			<form name="frmChange" method="post" action="" onSubmit="return validatePassword()">
+			<form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>"
+				method="post">
 				<h3>Edit Password</h3>
-				<label>Old Password :</label> <input type="text" id="old-password"
-					name="old-password"><br>
-				<br> <label>New Password :</label> <input type="text"
-					id="new-password" name="new-password"><br>
-				<br> <label>Confirm Password :</label> <input type="text"
-					id="confirm-password" name="confirm-password"><br>
-				<br> <input type="submit" name="submit-2" value="Submit" class="user-submit">
+				<label>New Password:</label> <input type="password" name="new_password" id="new-password"
+					<?php echo (!empty($new_password_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $new_password; ?>">
+				<span class="invalid-feedback"><?php echo $new_password_err; ?></span><br><br> 
+				<label>Confirm Password:</label> <input type="password" name="confirm_password" id="confirm-password"<?php echo (!empty($confirm_password_err)) ? 'is-invalid' : ''; ?>">
+				<span class="invalid-feedback"><?php echo $confirm_password_err; ?></span><br>
+				<br> <input type="submit" class="user-submit" value="Submit">
 			</form>
 		</div>
-	</div>
 
-<?php /*tab function*/?>
-<script>
+
+		<!--tab function-->
+		<script>
 function openStatus(evt, statusName) {
   var i, tabcontent, tablinks;
   tabcontent = document.getElementsByClassName("tabcontent");
@@ -95,97 +168,55 @@ function openStatus(evt, statusName) {
 document.getElementById("defaultOpen").click();
 </script>
 
-<?php /*validate password*/?>
-<script>
-function validatePassword() {
-var old-password,new-password,confirm-password,output = true;
+		<!--validate password-->
 
-old-password = document.frmChange.old-password;
-new-password = document.frmChange.new-password;
-confirm-password = document.frmChange.confirm-password;
 
-if(!old-password.value) {
-old-password.focus();
-document.getElementById("old-password").innerHTML = "required";
-output = false;
-}
-else if(!new-password.value) {
-new-password.focus();
-document.getElementById("new-password").innerHTML = "required";
-output = false;
-}
-else if(!confir-password.value) {
-confirm-password.focus();
-document.getElementById("confirm-password").innerHTML = "required";
-output = false;
-}
-if(new-password.value != confirm-password.value) {
-new-password.value="";
-confirm-password.value="";
-new-password.focus();
-document.getElementById("confirm-password").innerHTML = "not same";
-output = false;
-} 	
-return output;
-}
-</script>
+		<!-- Footer -->
+		<!-- Footer boarderline -->
 
-<!-- Footer -->
-	<!-- Footer boarderline -->
+		<hr class="footer-line">
 
-	<hr class="footer-line">
+		<footer class="footer">
+			<div class="footer-about">
+				<h3>About Us</h3>
+				<p>Instagraham Inc.'s main product is a thinly-veiled copy of
+					Instagram.</p>
+			</div>
+			<div class="footer-contact">
+				<h3 style="text-align: center;">Contact</h3>
+				<ul>
+					<li>Email: instagrahaminc@insta.com</li>
+					<li>Tel: +603-12345678</li>
+				</ul>
+			</div>
+			<div class="footer-office">
+				<h3>Office Hour</h3>
+				<p>9:00AM to 6:00PM</p>
+				<p>Monday to Saturday</p>
+			</div>
+		</footer>
 
-	<footer class="footer">
-		<div class="footer-about">
-			<h3>About Us</h3>
-			<p>Instagraham Inc.'s main product is a thinly-veiled copy of
-				Instagram.</p>
-		</div>
-		<div class="footer-contact">
-			<h3 style="text-align: center;">Contact</h3>
-			<ul>
-				<li>Email: instagrahaminc@insta.com</li>
-				<li>Tel: +603-12345678</li>
-			</ul>
-		</div>
-		<div class="footer-office">
-			<h3>Office Hour</h3>
-			<p>9:00AM to 6:00PM</p>
-			<p>Monday to Saturday</p>
-		</div>
-	</footer>
 </body>
 </html>
 
+<!-- set username and email -->
 <?php
-      if(isset($_POST['submit-1'])){
-        $username = $_POST['Uname'];
-        $email = $_POST['Email'];
-      $query = "UPDATE users SET username = '$username',
+if (isset($_POST['submit-1'])) {
+    $username = $_POST['Uname'];
+    $email = $_POST['Email'];
+    $query = "UPDATE users SET username = '$username',
                       email = '$email'
                       WHERE iduser = '$id'";
-                      $result = mysqli_query($db, $query) or die(mysqli_error($db));
-      ?>
-        <script type="text/javascript">
+    $result = mysqli_query($db, $query) or die(mysqli_error($db));
+    ?>
+<script type="text/javascript">
             alert("Update Successfull.");
             window.location = "edit-acc.php";
         </script>
-        <?php
-             }              
-?>
-
 <?php
-session_start();
-$_SESSION["userId"] = "9";
-$db = mysqli_connect("localhost", "root", "test", "blog_samples") or die("Connection Error: " . mysqli_error($conn));
-
-if (count($_POST) > 0) {
-    $result = mysqli_query($db, "SELECT *from users WHERE iduser='" . $_SESSION["iduser"] . "'");
-    $row = mysqli_fetch_array($result);
-    if ($_POST["old-password"] == $row["password"]) {
-        mysqli_query($db, "UPDATE users set password='" . $_POST["new-password"] . "' WHERE iduser='" . $_SESSION["iduser"] . "'");
-        $message = "Password Changed";
-    } else
-        $message = "Current Password is not correct";
 }
 ?>
+
+
+        
+
