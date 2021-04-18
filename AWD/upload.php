@@ -28,6 +28,7 @@ body, h1, h2, h3, h4, h5, h6 {
 	<div id="background-container">
 	<div id="wrapper-system">
     <?php
+    session_start();
     $target_dir = "uploads/"; // set target directory
     $target_filename = basename($_FILES["fileToUpload"]["name"]); // set target filename
     $target_file = $target_dir . $target_filename; // concatenate
@@ -79,7 +80,7 @@ body, h1, h2, h3, h4, h5, h6 {
             echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
         }
 
-        $q = "INSERT INTO photo (imageurl,title,comment) VALUES ('" . $target_dir . time() . "." . $imageFileType . "','" . $image_name . "','" . addslashes($_POST['comment']) . "')";
+        $q = "INSERT INTO photo (imageurl,title,comment,iduser) VALUES ('" . $target_dir . time() . "." . $imageFileType . "','" . $image_name . "','" . addslashes($_POST['comment']) . "',".$_SESSION["iduser"].")";
 
         if ($mysqli->query($q)) {
             echo "<p>File added to database.</p>";

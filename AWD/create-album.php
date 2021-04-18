@@ -26,6 +26,8 @@ body, h1, h2, h3, h4, h5, h6 {
 	<div id="background-container">
 	<div id="wrapper-system">
     <?php
+    session_start();
+    
     $uploadOk = FALSE;
    
     // retreive user input
@@ -43,16 +45,16 @@ body, h1, h2, h3, h4, h5, h6 {
         }
 
         // Create query to update detail according to image id
-        $q = "INSERT INTO album (title) VALUES (" . $album_name . ") ";
+        $q = "INSERT INTO album (title,iduser) VALUES (" . $album_name . ", ".$_SESSION['iduser'].") ";
 
         // If query executed or failed to do so
         if ($mysqli->query($q)) {
             echo "<p>Album: ".$album_name."  created.</p>";
         } else {
-            echo "<p>Something went wrong. Please contact your system adminstrator.</p>";
+            echo "<p>Something went wrong11111. Please contact your system adminstrator.</p>";
         }
     } else {
-        echo "<p>Something went wrong. Please contact your system adminstrator.</p>";
+        echo "<p>Something went wrong222. Please contact your system adminstrator.</p>";
     }
 
     ?>
