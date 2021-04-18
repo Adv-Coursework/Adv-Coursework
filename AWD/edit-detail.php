@@ -6,6 +6,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="css/Instagraham_style.css">
+<link rel="stylesheet" href="css/bootstrap.min.css">
 <link rel="stylesheet"
 	href="https://fonts.googleapis.com/css?family=Karma">
 <style>
@@ -54,7 +55,7 @@ if ($res = $mysqli->query("SELECT title,imageurl,comment FROM photo WHERE idphot
 		<img src=" <?= $image["imageurl"]?>" alt="<?=$image["title"]?>"
 			height="600" />
 
-		<!--Obtain data from user for updating purpose-->
+		<!--Obtain data from user for updating purpsoe-->
 		<!--Create a form for user input-->
 		<div id="edit-input-container">
 		<form action="update-detail.php" method="post" enctype="multipart/form-data">
@@ -67,5 +68,8 @@ if ($res = $mysqli->query("SELECT title,imageurl,comment FROM photo WHERE idphot
 		</div>	
 
 	</div>
+	<script src="js/jquery-3.6.0.slim.min.js"></script>
+	<script src="js/popper.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
 </body>
 </html>
