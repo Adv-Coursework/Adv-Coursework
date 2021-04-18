@@ -43,8 +43,8 @@ body, h1, h2, h3, h4, h5, h6 {
 <body>
 	<!-- Top navigator -->
 
-	<nav class="navbar navbar-expand-lg navbar-light bg-light">
-		<a class="navbar-brand">Welcome</a>
+	<nav class="navbar navbar-expand-lg navbar-light bg-light" >
+		<a class="navbar-brand" style="width:10%;" href="Instagraham_Inc.php"><img src="InstagrahamInc.png" alt="InstagrahamInc_Logo" style="width: 100%; object-fit: contain;"></a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse"
 			data-target="#navbarSupportedContent"
 			aria-controls="navbarSupportedContent" aria-expanded="false"
@@ -65,7 +65,7 @@ body, h1, h2, h3, h4, h5, h6 {
 					href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
 					aria-haspopup="true" aria-expanded="false" style="color: black;"> Account </a>
 					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-						<a class="dropdown-item" href="album.php" style="color: black;">Profile</a>
+						<a class="dropdown-item" href="user-prof.php" style="color: black;">Profile</a>
 						<a class="dropdown-item" href="login-test.php"
 							style="color: black;">Login</a> <a class="dropdown-item"
 							href="logout-test.php" style="color: black;">Logout</a>
