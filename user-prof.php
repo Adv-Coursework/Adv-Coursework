@@ -1,15 +1,4 @@
 
-<?php 
-// Initialize the session
-session_start();
-
-// Check if the user is logged in, if not then redirect him to login page
-if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
-    echo "Please login to access to the page.";
-    exit;
-}
-
-?>
 <!DOCTYPE html>
 
 <html>
@@ -40,6 +29,7 @@ body, html {
 <!-- Retrieve data from user -->
 <?php
 include 'connection.php';
+session_start();
 $id = $_SESSION['iduser'];
 $query = mysqli_query($db, "SELECT * FROM users where iduser='$id'") or die(mysqli_error());
 $row = mysqli_fetch_array($query);

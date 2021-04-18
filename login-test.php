@@ -102,9 +102,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     <meta charset="UTF-8">
     <title>Login</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="geni.css" type="text/css">
     <style>
         body{ font: 14px sans-serif; }
-        .wrapper{ width: 350px; padding: 20px; }
+       
     </style>
 </head>
 <body>
