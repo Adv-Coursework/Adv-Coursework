@@ -129,7 +129,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 			<form action="#" method="post" enctype="multipart/form-data">
 				<h3>Edit Profile</h3>
 				<label>Username :</label> 
-				<input type="text" id="username" name="Uname" value="<?= $row["username"]?>"><br> <br> 
+				<input type="text" id="username" name="Uname" value="<?= $row["username"]?>"required><br> <br> 
 				<label>Nickname :</label> 
 				<input type="text" id="nickname" name="Nname" value="<?= $row["nickname"]?>"><br> <br> 
 				<label>Gender :</label> 
@@ -226,6 +226,7 @@ if (isset($_POST['submit-1'])) {
         </script>
 <?php
 }
+session_destroy();
 ?>
 
 
