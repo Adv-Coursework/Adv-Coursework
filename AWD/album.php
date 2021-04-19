@@ -173,7 +173,7 @@ foreach ($album_array as $album) {
     //album title
     echo "<h5 class='card-title'> ".$album['title']." </h5>";
     // view album detail
-    echo "<a href='!#' class='btn btn-primary'>Album detail</a>";
+    echo "<a href='album-detail.php?id=".$album['idalbum']."' class='btn btn-primary'>Album detail</a>";
     echo "</div></div></div>";
 }
 echo "</div></div>\n";

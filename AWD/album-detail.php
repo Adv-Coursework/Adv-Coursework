@@ -3,25 +3,47 @@
 // Initialize the session
 session_start();
 
+// Get parameter value from url
+$albumid = htmlspecialchars($_GET["id"]);
+
 // Connect to db
 $mysqli = new mysqli("localhost", "root", "", "5114asst1");
 if ($mysqli->connect_errno) {
     echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
 }
 
-// Retrieve data
-if ($res = $mysqli->query("SELECT title,comment,imageurl,idphoto, iduser FROM photo;")) {
+// Retrieve album data
+$check = false;
+
+if ($res = $mysqli->query("SELECT idalbum, iduser, title FROM album WHERE idalbum = " . $albumid . ";")) {
     if ($res->data_seek(0)) {
-        $image_array = array();
         while ($rows = $res->fetch_assoc()) {
-            $image_array[] = $rows;
+            $album = $rows;
         }
+        $check = true;
     } else {
-        echo "No photo found";
+        echo "No album found";
     }
 } else {
-    echo "Query error: please contact your system adminstrator.";
+    echo "Album Query error: please contact your system adminstrator.";
 }
+
+// Retrieve photo data
+if ($check) {
+    if ($res = $mysqli->query("SELECT P.idphoto, P.imageurl, P.iduser, P.title, P.comment FROM photo P INNER JOIN album_photo AP ON P.idphoto=AP.idphoto WHERE AP.idalbum = " . $albumid . ";")) {
+        if ($res->data_seek(0)) {
+            $image_array = array();
+            while ($rows = $res->fetch_assoc()) {
+                $image_array[] = $rows;
+            }
+        } else {
+            echo "No photo found";
+        }
+    } else {
+        echo "Photo Query error: please contact your system adminstrator.";
+    }
+}
+
 ?>
 
 <html>
@@ -61,9 +83,9 @@ body, h1, h2, h3, h4, h5, h6 {
 					href="Instagraham_Inc.php">Home <span class="sr-only">(current)</span></a>
 				</li>
 				<?php
-				
+
     if (isset($_SESSION["iduser"])) {
-        
+
         echo "<li class='nav-item'><a class='nav-link' href='upload-form.php' style='color: black;'>Upload</a></li>";
     }
     ?>
@@ -75,11 +97,13 @@ body, h1, h2, h3, h4, h5, h6 {
 						Account </a>
 					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
 						<a class="dropdown-item" href="user-prof.php"
-							style="color: black;">Profile</a> 
-							<a class="dropdown-item" href="login-test.php" style="color: black;">Login</a> 
-							<a class="dropdown-item" href="logout-test.php" style="color: black;">Logout</a>
+							style="color: black;">Profile</a> <a class="dropdown-item"
+							href="login-test.php" style="color: black;">Login</a> <a
+							class="dropdown-item" href="logout-test.php"
+							style="color: black;">Logout</a>
 						<div class="dropdown-divider"></div>
-						<a class="dropdown-item" href="delete-account-page-test.php" style="color: red;">Delete Account (Login required)</a>
+						<a class="dropdown-item" href="delete-account-page-test.php"
+							style="color: red;">Delete Account (Login required)</a>
 					</div></li>
 			</ul>
 			<div class="d-inline-block">
@@ -93,60 +117,34 @@ if (isset($_SESSION["iduser"])) {
 			</div>
 		</div>
 	</nav>
-	
+
 	<div class="jumbotron">
-	<!-- 	create album -->
-		<button type="button" class="btn btn-primary" data-toggle="modal"
-			data-target="#edit-album">Edit album</button>
-		<!-- Modal -->
-		<form action="create-album.php" method="post"
-			enctype="multipart/form-data">
-			<div class="modal" id="edit-album" tabindex="-1" role="dialog"
-				aria-labelledby="ModalLabel" aria-hidden="true">
-				<div class="modal-dialog" role="document">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h5 class="modal-title" id="ModalLabel">Edit Album</h5>
-							<button type="button" class="close" data-dismiss="modal"
-								aria-label="Close">
-								<span aria-hidden="true">×</span>
-							</button>
-						</div>
-						<div class="modal-body">
-
-							<div class="form-group">
-								<label for=input-album-name>Album name</label> <input required
-									type="text" class="form-control" id="input-album-name"
-									placeholder="Album name" name="album_name">
-							</div>
-
-						</div>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-secondary"
-								data-dismiss="modal">Close</button>
-							<input class="btn btn-primary" type="submit" name="submit"
-								value="submit">
-						</div>
-					</div>
-				</div>
-			</div>
-		</form>
+		<div class="container d-flex justify-content-between">
+			<h>  <?php echo $album['title'];?>	</h>
+			<a class="btn btn-primary" href="!#">Edit album detail</a>
+		</div>
 	</div>
+
+	 <div class="container">
+	 <div class="row"
+	 
 	 <?php
 foreach ($image_array as $image) {
-    echo "<div class=\"photo-container\" >\n";
+    echo "<div class=\"col-4\" >\n";
     echo "<div class=\"photo-frame\" >\n";
     echo "<img class=\"photo\" src = \"" . $image["imageurl"] . "\" alt= \"" . $image["title"] . "\" />";
     echo "</div>\n";
     echo "<h3>Title: " . $image["title"] . "</h3>";
     echo "<p>Comment: " . $image["comment"] . "</p>";
-    if ($image["iduser"] == $_SESSION["iduser"]){
+    if ($image["iduser"] == $_SESSION["iduser"]) {
         echo "<a href = \" edit-detail.php?id=" . $image["idphoto"] . " \" > Click to edit detail </a><br>";
         echo "<a href = \" delete-photo.php?id=" . $image["idphoto"] . " \" > Delete </a><br>";
     }
     echo "</div>\n";
+    
 }
 ?>
+	</div>
 	</div>
 	<!-- Footer -->
 	<!-- Footer boarderline -->
