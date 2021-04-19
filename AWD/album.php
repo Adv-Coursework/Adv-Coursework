@@ -58,8 +58,8 @@ body, h1, h2, h3, h4, h5, h6 {
 
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
 			<ul class="navbar-nav mr-auto">
-				<li class="nav-item "><a class="nav-link" href="Instagraham_Inc.php" style="color: black;">Home
-						<span class="sr-only">(current)</span>
+				<li class="nav-item "><a class="nav-link" href="Instagraham_Inc.php"
+					style="color: black;">Home <span class="sr-only">(current)</span>
 				</a></li>
 				<?php
     if (isset($_SESSION["iduser"])) {
@@ -84,7 +84,7 @@ body, h1, h2, h3, h4, h5, h6 {
 					</div></li>
 			</ul>
 			<div class="d-inline-block">
-			
+
 				<!--display current logged in account -->
 				<p style="margin: 0px"> Welcome,
 			<?php
@@ -98,22 +98,9 @@ if (isset($_SESSION["iduser"])) {
 	</nav>
 
 	<div class="jumbotron">
-		<h1 class="display-3">Hello, world!</h1>
-		<p class="lead">This is a simple hero unit, a simple jumbotron-style
-			component for calling extra attention to featured content or
-			information.</p>
-		<hr class="my-2">
-		<p>It uses utility classes for typography and spacing to space content
-			out within the larger container.</p>
-		<p class="lead">
-			<a class="btn btn-primary btn-lg" href="#!" role="button">Some action</a>
-		</p>
-	</div>
-	<div class="container">
-		<!-- Button trigger modal -->
+		<!-- 	create album -->
 		<button type="button" class="btn btn-primary" data-toggle="modal"
-			data-target="#create-album">Launch demo modal</button>
-
+			data-target="#create-album">Create new album</button>
 		<!-- Modal -->
 		<form action="create-album.php" method="post"
 			enctype="multipart/form-data">
@@ -148,32 +135,48 @@ if (isset($_SESSION["iduser"])) {
 				</div>
 			</div>
 		</form>
+
 	</div>
+
+	<div class="container"></div>
 
 
 	 <?php
-// Get parameter value from url
-// $album_name= htmlspecialchars($_GET["album_name"]);
-
-// Retrieve image detail - from view-photo.php
+// Connect to db
 $mysqli = new mysqli("localhost", "root", "", "5114asst1");
 if ($mysqli->connect_errno) {
     echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
 }
 
-// Retrieve data from user
-// if ($res = $mysqli->query("SELECT title,imageurl,comment FROM photo WHERE idphoto =" . $imageid . ";")) {
-// if ($res->data_seek(0)) {
-// $image = array();
-// while ($rows = $res->fetch_assoc()) {
-// $image = $rows;
-// }
-// } else {
-// echo "No photo found";
-// }
-// } else {
-// echo "Query error: please contact your system adminstrator.";
-// }
+// Retrieve data
+if ($res = $mysqli->query("SELECT title,imageurl,idalbum,iduser FROM album WHERE iduser = " . $_SESSION['iduser'] . ";")) {
+    if ($res->data_seek(0)) {
+        $album_array = array();
+        while ($rows = $res->fetch_assoc()) {
+            $album_array[] = $rows;
+        }
+    } else {
+        echo "No album found";
+    }
+} else {
+    echo "Query error: please contact your system adminstrator.";
+}
+
+echo "<div class=\"container\" >\n";
+echo "<div class=\"row\" >\n";
+foreach ($album_array as $album) {
+    echo "<div class=\"col-4\" >\n";
+    echo "<div class='card'>";
+    // thumbnail
+    echo "<img class='card-img-top' src='".$album['imageurl']."' alt='".$album['title']."'>";
+    echo "<div class='card-body'>";
+    //album title
+    echo "<h5 class='card-title'> ".$album['title']." </h5>";
+    // view album detail
+    echo "<a href='!#' class='btn btn-primary'>Album detail</a>";
+    echo "</div></div></div>";
+}
+echo "</div></div>\n";
 ?>
 
 	<!-- Footer -->

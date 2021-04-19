@@ -1,16 +1,28 @@
 <!DOCTYPE html>
 
 <html>
-<title>Create album</title>
+<head>
+<title>User Profile</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="css/Instagraham_style.css">
+<link rel="stylesheet" href="css/bootstrap.min.css">
+<link rel="stylesheet" href="css/geni.css" type="text/css">
 <link rel="stylesheet"
 	href="https://fonts.googleapis.com/css?family=Karma">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <style>
 body, h1, h2, h3, h4, h5, h6 {
 	font-family: "Karma", sans-serif
 }
+
+body, html {
+	height: 100%;
+	margin: 0;
+}
+
+
 </style>
 </head>
 <body>
@@ -94,13 +106,14 @@ if (isset($_SESSION["iduser"])) {
         }
 
         // Create query to update detail according to image id
-        $q = "INSERT INTO album (title,iduser) VALUES (" . $album_name . ", " . $_SESSION['iduser'] . ") ";
+        $q = "INSERT INTO album (title,iduser) VALUES ('" . $album_name . "', " . $_SESSION['iduser'] . ") ";
 
         // If query executed or failed to do so
         if ($mysqli->query($q)) {
             echo "<p>Album: " . $album_name . "  created.</p>";
         } else {
             echo "<p>Something went wrong11111. Please contact your system adminstrator.</p>";
+		    var_dump($mysqli->error);
         }
     } else {
         echo "<p>Something went wrong222. Please contact your system adminstrator.</p>";
@@ -108,7 +121,7 @@ if (isset($_SESSION["iduser"])) {
 
     ?>
     <!--Hyperlink to different page-->
-			<a href=" Instagraham_Inc.php"> Back to Home</a>
+			<a href=" album.php"> Back to Album</a>
 		</div>
 	</div>
 </body>

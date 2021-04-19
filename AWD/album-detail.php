@@ -26,7 +26,7 @@ if ($res = $mysqli->query("SELECT title,comment,imageurl,idphoto, iduser FROM ph
 
 <html>
 <head>
-<title>Home</title>
+<title>Album</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="css/Instagraham_style.css">
@@ -85,17 +85,53 @@ body, h1, h2, h3, h4, h5, h6 {
 			<div class="d-inline-block">
 				<p style="margin: 0px"> Welcome,
 			<?php
-            if (isset($_SESSION["iduser"])) {
-                echo $_SESSION["username"];
-            }
-            ?>
+if (isset($_SESSION["iduser"])) {
+    echo $_SESSION["username"];
+}
+?>
 			</p>
 			</div>
 		</div>
 	</nav>
+	
+	<div class="jumbotron">
+	<!-- 	create album -->
+		<button type="button" class="btn btn-primary" data-toggle="modal"
+			data-target="#edit-album">Edit album</button>
+		<!-- Modal -->
+		<form action="create-album.php" method="post"
+			enctype="multipart/form-data">
+			<div class="modal" id="edit-album" tabindex="-1" role="dialog"
+				aria-labelledby="ModalLabel" aria-hidden="true">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="ModalLabel">Edit Album</h5>
+							<button type="button" class="close" data-dismiss="modal"
+								aria-label="Close">
+								<span aria-hidden="true">×</span>
+							</button>
+						</div>
+						<div class="modal-body">
 
+							<div class="form-group">
+								<label for=input-album-name>Album name</label> <input required
+									type="text" class="form-control" id="input-album-name"
+									placeholder="Album name" name="album_name">
+							</div>
 
-	<div class="content">
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary"
+								data-dismiss="modal">Close</button>
+							<input class="btn btn-primary" type="submit" name="submit"
+								value="submit">
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
 	 <?php
 foreach ($image_array as $image) {
     echo "<div class=\"photo-container\" >\n";
@@ -104,7 +140,6 @@ foreach ($image_array as $image) {
     echo "</div>\n";
     echo "<h3>Title: " . $image["title"] . "</h3>";
     echo "<p>Comment: " . $image["comment"] . "</p>";
-    echo "<a href = \" album-addphoto-form.php?id=" . $image["idphoto"] . " \" > Add to album </a><br>";
     if ($image["iduser"] == $_SESSION["iduser"]){
         echo "<a href = \" edit-detail.php?id=" . $image["idphoto"] . " \" > Click to edit detail </a><br>";
         echo "<a href = \" delete-photo.php?id=" . $image["idphoto"] . " \" > Delete </a><br>";
