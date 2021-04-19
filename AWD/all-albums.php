@@ -66,8 +66,8 @@ body, h1, h2, h3, h4, h5, h6 {
         echo "<li class='nav-item'><a class='nav-link' href='upload-form.php' style='color: black;'>Upload</a></li>";
     }
     ?>	
-				<li class="nav-item active"><a class="nav-link" href="all-albums.php"
-					style="color: black;">Album</a></li>
+				<li class="nav-item active"><a class="nav-link"
+					href="all-albums.php" style="color: black;">Album</a></li>
 				<li class="nav-item dropdown"><a class="nav-link dropdown-toggle"
 					href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
 					aria-haspopup="true" aria-expanded="false" style="color: black;">
@@ -90,6 +90,8 @@ body, h1, h2, h3, h4, h5, h6 {
 			<?php
 if (isset($_SESSION["iduser"])) {
     echo $_SESSION["username"];
+} else {
+    echo "guest user!";
 }
 ?>
 			</p>
@@ -149,34 +151,38 @@ if ($mysqli->connect_errno) {
 }
 
 // Retrieve data
-if ($res = $mysqli->query("SELECT title,imageurl,idalbum,iduser FROM album WHERE iduser = " . $_SESSION['iduser'] . ";")) {
-    if ($res->data_seek(0)) {
-        $album_array = array();
-        while ($rows = $res->fetch_assoc()) {
-            $album_array[] = $rows;
+// Check if user is logged in to view own albums
+if (isset($_SESSION["iduser"])) {
+    if ($res = $mysqli->query("SELECT title,imageurl,idalbum,iduser FROM album WHERE iduser = " . $_SESSION['iduser'] . ";")) {
+        if ($res->data_seek(0)) {
+            $album_array = array();
+            while ($rows = $res->fetch_assoc()) {
+                $album_array[] = $rows;
+
+                // fetch albums from db if user has albums
+                echo "<div class=\"container\" >\n";
+                echo "<div class=\"row\" >\n";
+                foreach ($album_array as $album) {
+                    echo "<div class=\"col-4\" >\n";
+                    echo "<div class='card'>";
+                    // thumbnail
+                    echo "<img class='card-img-top' src='" . $album['imageurl'] . "' alt='" . $album['title'] . "'>";
+                    echo "<div class='card-body'>";
+                    // album title
+                    echo "<h5 class='card-title'> " . $album['title'] . " </h5>";
+                    // view album detail
+                    echo "<a href='album-detail.php?id=" . $album['idalbum'] . "' class='btn btn-primary'>Album detail</a>";
+                    echo "</div></div></div>";
+                }
+                echo "</div></div>\n";
+            }
+        } else {
+            echo "You don't have any album. Let's create one!";
         }
-    } else {
-        echo "No album found";
     }
 } else {
-    echo "Query error: please contact your system adminstrator.";
+    echo "Please log in to view your albums.";
 }
-
-echo "<div class=\"container\" >\n";
-echo "<div class=\"row\" >\n";
-foreach ($album_array as $album) {
-    echo "<div class=\"col-4\" >\n";
-    echo "<div class='card'>";
-    // thumbnail
-    echo "<img class='card-img-top' src='".$album['imageurl']."' alt='".$album['title']."'>";
-    echo "<div class='card-body'>";
-    //album title
-    echo "<h5 class='card-title'> ".$album['title']." </h5>";
-    // view album detail
-    echo "<a href='album-detail.php?id=".$album['idalbum']."' class='btn btn-primary'>Album detail</a>";
-    echo "</div></div></div>";
-}
-echo "</div></div>\n";
 ?>
 
 	<!-- Footer -->
