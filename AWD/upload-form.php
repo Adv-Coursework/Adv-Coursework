@@ -38,25 +38,29 @@ body, html {
 
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
 			<ul class="navbar-nav mr-auto">
-				<li class="nav-item "><a class="nav-link"
-					href="Instagraham_Inc.php" style="color:black;">Home <span class="sr-only">(current)</span></a>
+				<li class="nav-item active"><a class="nav-link"
+					href="Instagraham_Inc.php">Home <span class="sr-only">(current)</span></a>
 				</li>
 				<?php
-				session_start();
+				
     if (isset($_SESSION["iduser"])) {
         
-        echo "<li class='nav-item active'><a class='nav-link' href='upload-form.php' style='color: black;'>Upload</a></li>";
+        echo "<li class='nav-item'><a class='nav-link' href='upload-form.php' style='color: black;'>Upload</a></li>";
     }
     ?>
 				<li class="nav-item"><a class="nav-link" href="all-albums.php"
 					style="color: black;">Album</a></li>
+	
 				<li class="nav-item dropdown"><a class="nav-link dropdown-toggle"
 					href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
 					aria-haspopup="true" aria-expanded="false" style="color: black;">
 						Account </a>
 					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-						<a class="dropdown-item" href="user-prof.php"
-							style="color: black;">Profile</a> 
+						<?php 
+						if (isset($_SESSION["iduser"])) {
+						    echo "<a class='dropdown-item' href='user-prof.php' style='color: black;''>Profile</a> ";
+						}
+						?>
 							<a class="dropdown-item" href="login-test.php" style="color: black;">Login</a> 
 							<a class="dropdown-item" href="logout-test.php" style="color: black;">Logout</a>
 						<div class="dropdown-divider"></div>
@@ -66,17 +70,16 @@ body, html {
 			<div class="d-inline-block">
 				<p style="margin: 0px"> Welcome,
 			<?php
-if (isset($_SESSION["iduser"])) {
-    echo $_SESSION["username"];
-}
-?>
+            if (isset($_SESSION["iduser"])) {
+                echo $_SESSION["username"];
+            } else{
+                echo "guest user!";
+            }
+            ?>
 			</p>
 			</div>
 		</div>
 	</nav>
-
-
-
 
 	<!--Upload-->
 	<div id="background-container">

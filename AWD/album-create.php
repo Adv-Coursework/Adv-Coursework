@@ -54,13 +54,17 @@ body, html {
     ?>
 				<li class="nav-item"><a class="nav-link" href="all-albums.php"
 					style="color: black;">Album</a></li>
+	
 				<li class="nav-item dropdown"><a class="nav-link dropdown-toggle"
 					href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
 					aria-haspopup="true" aria-expanded="false" style="color: black;">
 						Account </a>
 					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-						<a class="dropdown-item" href="ser-prof.php"
-							style="color: black;">Profile</a> 
+						<?php 
+						if (isset($_SESSION["iduser"])) {
+						    echo "<a class='dropdown-item' href='user-prof.php' style='color: black;''>Profile</a> ";
+						}
+						?>
 							<a class="dropdown-item" href="login-test.php" style="color: black;">Login</a> 
 							<a class="dropdown-item" href="logout-test.php" style="color: black;">Logout</a>
 						<div class="dropdown-divider"></div>
@@ -72,14 +76,14 @@ body, html {
 			<?php
             if (isset($_SESSION["iduser"])) {
                 echo $_SESSION["username"];
+            } else{
+                echo "guest user!";
             }
             ?>
 			</p>
 			</div>
 		</div>
 	</nav>
-
-
 
 	<div id="background-container">
 		<div id="wrapper-system">
