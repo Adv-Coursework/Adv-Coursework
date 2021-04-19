@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+
+<html>
+<title>Delete album</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="css/Instagraham_style.css">
+<link rel="stylesheet"
+    href="https://fonts.googleapis.com/css?family=Karma">
+<style>
+body, h1, h2, h3, h4, h5, h6 {
+    font-family: "Karma", sans-serif
+}
+
+</style>
+</head>
+<body>
+	<!-- Top navigator -->
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+		<!-- add logo with link to home page -->
+		<a class="navbar-brand" style="width: 10%;" href="Instagraham_Inc.php"><img
+			src="InstagrahamInc.png" alt="InstagrahamInc_Logo"
+			style="width: 100%; object-fit: contain;"></a>
+		<!-- responsive collapse navbar -->
+		<button class="navbar-toggler" type="button" data-toggle="collapse"
+			data-target="#navbarSupportedContent"
+			aria-controls="navbarSupportedContent" aria-expanded="false"
+			aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+
+		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+			<ul class="navbar-nav mr-auto">
+				<li class="nav-item active"><a class="nav-link"
+					href="Instagraham_Inc.php">Home <span class="sr-only">(current)</span></a>
+				</li>
+				<?php
+				
+    if (isset($_SESSION["iduser"])) {
+        
+        echo "<li class='nav-item'><a class='nav-link' href='upload-form.php' style='color: black;'>Upload</a></li>";
+    }
+    ?>
+				<li class="nav-item"><a class="nav-link" href="all-albums.php"
+					style="color: black;">Album</a></li>
+				<li class="nav-item dropdown"><a class="nav-link dropdown-toggle"
+					href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+					aria-haspopup="true" aria-expanded="false" style="color: black;">
+						Account </a>
+					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+						<a class="dropdown-item" href="user-prof.php"
+							style="color: black;">Profile</a> 
+							<a class="dropdown-item" href="login-test.php" style="color: black;">Login</a> 
+							<a class="dropdown-item" href="logout-test.php" style="color: black;">Logout</a>
+						<div class="dropdown-divider"></div>
+						<a class="dropdown-item" href="delete-account-page-test.php" style="color: red;">Delete Account (Login required)</a>
+					</div></li>
+			</ul>
+			<div class="d-inline-block">
+				<p style="margin: 0px"> Welcome,
+			<?php
+            if (isset($_SESSION["iduser"])) {
+                echo $_SESSION["username"];
+            }
+            ?>
+			</p>
+			</div>
+		</div>
+	</nav>
+
+    <div id="background-container">
+    <div id="wrapper-system">
+    <?php
+
+   
+    // retreive user input
+    if (isset($_POST["submit"])) {
+        $album_name = $_POST["album_name"];
+    }
+    
+    // get parameter value from url
+    $album_name = htmlspecialchars($_GET["idalbum"]);
+    
+    if ($res = $mysqli->query("SELECT idalbum FROM album WHERE idalbum =" . $album_name . ";")) {
+        if ($res->data_seek(0)) {
+            $album_name = array();
+            while ($rows = $res->fetch_assoc()) {
+                $album_name = $rows;
+            }
+        } else {
+            echo "No album found";
+        }
+    } else {
+        echo "Query error: please contact your system adminstrator.";
+    }
+    
+    // Delete file from folder according to id acquired
+    unlink($album_name["idalbum"]);
+    // Create query to delete according to image id
+    $q = "DELETE FROM album WHERE idalbum =" . $album_name . ";";
+    
+    if ($mysqli->query($q)) {
+        echo "<p>Delete completed.</p>";
+    } else {
+        echo "<p>Something went wrong. Please contact your system adminstrator.</p>";
+    }
+    ?>
+    <!--Hyperlink to different page-->
+    <a href=" Instagraham_Inc.php"> Back to Home</a>
+    </div>
+    </div>
+    <script src="js/jquery-3.6.0.slim.min.js"></script>
+	<script src="js/popper.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+</body>
+</html>(edited)
