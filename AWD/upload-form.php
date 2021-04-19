@@ -1,32 +1,8 @@
 <!DOCTYPE html>
-<?php
-// Initialize the session
-session_start();
-
-// Connect to db
-$mysqli = new mysqli("localhost", "root", "", "5114asst1");
-if ($mysqli->connect_errno) {
-    echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
-}
-
-// Retrieve data
-if ($res = $mysqli->query("SELECT title,comment,imageurl,idphoto FROM photo;")) {
-    if ($res->data_seek(0)) {
-        $image_array = array();
-        while ($rows = $res->fetch_assoc()) {
-            $image_array[] = $rows;
-        }
-    } else {
-        echo "No photo found";
-    }
-} else {
-    echo "Query error: please contact your system adminstrator.";
-}
-?>
 
 <html>
 <head>
-<title>Home</title>
+<title>Upload photo</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="css/Instagraham_style.css">
@@ -37,9 +13,14 @@ if ($res = $mysqli->query("SELECT title,comment,imageurl,idphoto FROM photo;")) 
 body, h1, h2, h3, h4, h5, h6 {
 	font-family: "Karma", sans-serif
 }
-</style>
 
+body, html {
+	height: 100%;
+	margin: 0;
+}
+</style>
 </head>
+
 <body>
 	<!-- Top navigator -->
 	<nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -57,11 +38,11 @@ body, h1, h2, h3, h4, h5, h6 {
 
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
 			<ul class="navbar-nav mr-auto">
-				<li class="nav-item active"><a class="nav-link"
+				<li class="nav-item "><a class="nav-link"
 					href="Instagraham_Inc.php">Home <span class="sr-only">(current)</span></a>
 				</li>
 				<?php
-				
+				session_start();
     if (isset($_SESSION["iduser"])) {
         
         echo "<li class='nav-item'><a class='nav-link' href='upload-form.php' style='color: black;'>Upload</a></li>";
@@ -95,49 +76,30 @@ if (isset($_SESSION["iduser"])) {
 	</nav>
 
 
-	<div class="content">
-	 <?php
-foreach ($image_array as $image) {
-    echo "<div class=\"photo-container\" >\n";
-    echo "<div class=\"photo-frame\" >\n";
-    echo "<img class=\"photo\" src = \"" . $image["imageurl"] . "\" alt= \"" . $image["title"] . "\" />";
-    echo "</div>\n";
-    echo "<h3>Title: " . $image["title"] . "</h3>";
-    echo "<p>Comment: " . $image["comment"] . "</p>";
-    echo "<a href = \" edit-detail.php?id=" . $image["idphoto"] . " \" > Click to edit detail </a><br>";
-    echo "<a href = \" delete-photo.php?id=" . $image["idphoto"] . " \" > Delete </a><br>";
-    echo "</div>\n";
-}
-?>
+
+
+	<!--Upload-->
+	<div id="background-container">
+		<div id="wrapper">
+			<h1>Upload Photo</h1>
+			<form action="upload.php" method="post" enctype="multipart/form-data">
+
+				<p>
+					Select Photo to upload: <input type="file" name="fileToUpload"
+						id="fileToUpload">
+				</p>
+				<p>
+					<label>Comment/Caption:</label> <input type="text" id="comment"
+						name="comment">
+				</p>
+				<p>
+					<input type="submit" value="Upload Photo" name="submit">
+				</p>
+			</form>
+		</div>
 	</div>
-	<!-- Footer -->
-	<!-- Footer boarderline -->
-
-	<hr class="footer-line">
-
-	<footer class="footer">
-		<div class="footer-about">
-			<h3>About Us</h3>
-			<p>Instagraham Inc.'s main product is a thinly-veiled copy of
-				Instagram.</p>
-		</div>
-		<div class="footer-contact">
-			<h3 style="text-align: center;">Contact</h3>
-			<ul>
-				<li>Email: instagrahaminc@insta.com</li>
-				<li>Tel: +603-12345678</li>
-			</ul>
-		</div>
-		<div class="footer-office">
-			<h3>Office Hour</h3>
-			<p>9:00AM to 6:00PM</p>
-			<p>Monday to Saturday</p>
-		</div>
-	</footer>
 	<script src="js/jquery-3.6.0.slim.min.js"></script>
 	<script src="js/popper.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
-
-
 </body>
 </html>

@@ -45,7 +45,7 @@ if ($res = $mysqli->query("SELECT title,imageurl,comment FROM photo WHERE idphot
 	<div class="navigation-container">
 		<ul>
 			<li><a href="Instagraham_Inc.php">Home</a></li>
-			<li><a href="upload-form.html">Upload photo</a></li>
+			<li><a href="upload-form.php">Upload photo</a></li>
 		</ul>
 
 	</div>
