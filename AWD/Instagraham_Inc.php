@@ -10,7 +10,7 @@ if ($mysqli->connect_errno) {
 }
 
 // Retrieve data
-if ($res = $mysqli->query("SELECT title,comment,imageurl,idphoto FROM photo;")) {
+if ($res = $mysqli->query("SELECT title,comment,imageurl,idphoto, iduser FROM photo;")) {
     if ($res->data_seek(0)) {
         $image_array = array();
         while ($rows = $res->fetch_assoc()) {
@@ -104,8 +104,10 @@ foreach ($image_array as $image) {
     echo "</div>\n";
     echo "<h3>Title: " . $image["title"] . "</h3>";
     echo "<p>Comment: " . $image["comment"] . "</p>";
-    echo "<a href = \" edit-detail.php?id=" . $image["idphoto"] . " \" > Click to edit detail </a><br>";
-    echo "<a href = \" delete-photo.php?id=" . $image["idphoto"] . " \" > Delete </a><br>";
+    if ($image["iduser"] == $_SESSION["iduser"]){
+        echo "<a href = \" edit-detail.php?id=" . $image["idphoto"] . " \" > Click to edit detail </a><br>";
+        echo "<a href = \" delete-photo.php?id=" . $image["idphoto"] . " \" > Delete </a><br>";
+    }
     echo "</div>\n";
 }
 ?>

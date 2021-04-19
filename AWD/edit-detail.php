@@ -26,7 +26,7 @@ if ($mysqli->connect_errno) {
 }
 
 // Retrieve data from user
-if ($res = $mysqli->query("SELECT title,imageurl,comment FROM photo WHERE idphoto =" . $imageid . ";")) {
+if ($res = $mysqli->query("SELECT title,imageurl,comment,iduser FROM photo WHERE idphoto =" . $imageid . ";")) {
     if ($res->data_seek(0)) {
         $image = array();
         while ($rows = $res->fetch_assoc()) {
@@ -64,6 +64,8 @@ if ($res = $mysqli->query("SELECT title,imageurl,comment FROM photo WHERE idphot
 			<input type="text" id="comment" name="comment" value="<?= $image["comment"]?>"> 
 			<input type="submit" name="submit" value="submit"> 
 			<input type="hidden" id="id" name="id" value="<?=$imageid?>">
+			<input type="hidden" id="iduser" name="iduser" value="<?=$image["iduser"]?>">
+			
 		</form>
 		</div>	
 
