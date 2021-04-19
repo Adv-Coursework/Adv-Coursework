@@ -4,8 +4,8 @@
 <title>Upload photo</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="css/Instagraham_style.css">
-<link rel="stylesheet" href="css/bootstrap.min.css">
+<link rel="stylesheet" href="../../css/Instagraham_style.css">
+<link rel="stylesheet" href="../../css/bootstrap.min.css">
 <link rel="stylesheet"
 	href="https://fonts.googleapis.com/css?family=Karma">
 <style>
@@ -32,41 +32,44 @@ body, h1, h2, h3, h4, h5, h6 {
         echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
     }
 
-    // get parameter value from url
-    $imageid = htmlspecialchars($_GET["id"]);
+    if (isset($_POST["submit"])) {
+        $imageID = $_POST["idphoto"];
+        $albumID = $_POST["album"];
+    }
 
-    if ($res = $mysqli->query("SELECT imageurl FROM photo WHERE idphoto =" . $imageid . ";")) {
-        if ($res->data_seek(0)) {
-            $image = array();
-            while ($rows = $res->fetch_assoc()) {
-                $image = $rows;
-            }
+    //check duplicate
+     $check = false;
+    
+     if ($res = $mysqli->query("SELECT * FROM album_photo WHERE (idphoto =" . $imageID . " AND idalbum =" . $albumID . " );")) {
+        if (!$res->data_seek(0)) {
+            $check = true;
         } else {
-            echo "No photo found";
+            echo "The photo already in the album";
         }
     } else {
         echo "Query error: please contact your system adminstrator.";
     }
-
-    // Delete file from folder according to id acquired
-    unlink($image["imageurl"]);
-    // Create query to delete according to image id
-    $q = "DELETE FROM photo WHERE idphoto =" . $imageid . ";";
+    
+    // Create query to insert photo into album
+    if ($check){
+    $q = "INSERT INTO album_photo (idphoto, idalbum) VALUES (".$imageID." , ".$albumID.")";
 
     if ($mysqli->query($q)) {
-        echo "<p>Delete complete.</p>";
+        echo "<p>Photo  added into your album.</p>";
     } else {
         echo "<p>Something went wrong. Please contact your system adminstrator.</p>";
     }
+    }
+    
     ?>
         <!--Hyperlink to different page-->
-	<a href=" Instagraham_Inc.php"> Back to Home</a>
+	<a href="../../album.php"> Back to Album</a>
     </div>
 
     </div>
-	<script src="js/jquery-3.6.0.slim.min.js"></script>
-	<script src="js/popper.min.js"></script>
-	<script src="js/bootstrap.min.js"></script>
+	<script src="../js/jquery-3.6.0.slim.min.js"></script>
+	<script src="../js/popper.min.js"></script>
+	<script src="../js/bootstrap.min.js"></script>
 </body>
 
 </html>
