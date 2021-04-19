@@ -58,44 +58,46 @@ body, h1, h2, h3, h4, h5, h6 {
 
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
 			<ul class="navbar-nav mr-auto">
-				<li class="nav-item active"><a class="nav-link"
-					href="Instagraham_Inc.php">Home <span class="sr-only">(current)</span></a>
+				<li class="nav-item "><a class="nav-link" href="Instagraham_Inc.php"
+					style="color: black;">Home <span class="sr-only">(current)</span></a>
 				</li>
 				<?php
-				
+
     if (isset($_SESSION["iduser"])) {
-        
+
         echo "<li class='nav-item'><a class='nav-link' href='upload-form.php' style='color: black;'>Upload</a></li>";
     }
     ?>
-				<li class="nav-item"><a class="nav-link" href="all-albums.php"
-					style="color: black;">Album</a></li>
-	
+				<li class="nav-item active"><a class="nav-link"
+					href="all-albums.php" style="color: black;">Album</a></li>
+
 				<li class="nav-item dropdown"><a class="nav-link dropdown-toggle"
 					href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
 					aria-haspopup="true" aria-expanded="false" style="color: black;">
 						Account </a>
 					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-						<?php 
-						if (isset($_SESSION["iduser"])) {
-						    echo "<a class='dropdown-item' href='user-prof.php' style='color: black;''>Profile</a> ";
-						}
-						?>
-							<a class="dropdown-item" href="login-test.php" style="color: black;">Login</a> 
-							<a class="dropdown-item" href="logout-test.php" style="color: black;">Logout</a>
+						<?php
+    if (isset($_SESSION["iduser"])) {
+        echo "<a class='dropdown-item' href='user-prof.php' style='color: black;''>Profile</a> ";
+    }
+    ?>
+							<a class="dropdown-item" href="login-test.php"
+							style="color: black;">Login</a> <a class="dropdown-item"
+							href="logout-test.php" style="color: black;">Logout</a>
 						<div class="dropdown-divider"></div>
-						<a class="dropdown-item" href="delete-account-page-test.php" style="color: red;">Delete Account (Login required)</a>
+						<a class="dropdown-item" href="delete-account-page-test.php"
+							style="color: red;">Delete Account (Login required)</a>
 					</div></li>
 			</ul>
 			<div class="d-inline-block">
 				<p style="margin: 0px"> Welcome,
 			<?php
-            if (isset($_SESSION["iduser"])) {
-                echo $_SESSION["username"];
-            } else{
-                echo "guest user!";
-            }
-            ?>
+if (isset($_SESSION["iduser"])) {
+    echo $_SESSION["username"];
+} else {
+    echo "guest user!";
+}
+?>
 			</p>
 			</div>
 		</div>
@@ -103,9 +105,14 @@ body, h1, h2, h3, h4, h5, h6 {
 
 
 	<div class="jumbotron">
-		<!-- 	create album -->
-		<button type="button" class="btn btn-primary" data-toggle="modal"
-			data-target="#create-album">Create new album</button>
+		<!--create album -->
+		<!-- User cant create and view album if not logged in -->
+		<?php
+if (isset($_SESSION["iduser"])) {
+    echo "<button type='button' class='btn btn-primary' data-toggle='modal'data-target='#create-album'>Create new album</button>'";
+}
+?>
+		 
 		<!-- Modal -->
 		<form action="album-create.php" method="post"
 			enctype="multipart/form-data">
@@ -132,7 +139,6 @@ body, h1, h2, h3, h4, h5, h6 {
 						<div class="modal-footer">
 							<button type="button" class="btn btn-secondary"
 								data-dismiss="modal">Close</button>
-							<!-- 						<button type="button" class="btn btn-primary">Create new album</button> -->
 							<input class="btn btn-primary" type="submit" name="submit"
 								value="submit">
 						</div>
@@ -153,6 +159,9 @@ if ($mysqli->connect_errno) {
     echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
 }
 
+//view all albums
+echo "<div class=\"container\" >\n";
+echo "<div class=\"row\" >\n";
 // Retrieve data
 // Check if user is logged in to view own albums
 if (isset($_SESSION["iduser"])) {
@@ -161,23 +170,19 @@ if (isset($_SESSION["iduser"])) {
             $album_array = array();
             while ($rows = $res->fetch_assoc()) {
                 $album_array[] = $rows;
-
-                // fetch albums from db if user has albums
-                echo "<div class=\"container\" >\n";
-                echo "<div class=\"row\" >\n";
-                foreach ($album_array as $album) {
-                    echo "<div class=\"col-4\" >\n";
-                    echo "<div class='card'>";
-                    // thumbnail
-                    echo "<img class='card-img-top' src='" . $album['imageurl'] . "' alt='" . $album['title'] . "'>";
-                    echo "<div class='card-body'>";
-                    // album title
-                    echo "<h5 class='card-title'> " . $album['title'] . " </h5>";
-                    // view album detail
-                    echo "<a href='album-detail.php?id=" . $album['idalbum'] . "' class='btn btn-primary'>Album detail</a>";
-                    echo "</div></div></div>";
-                }
-                echo "</div></div>\n";
+            }
+            //fetch albums from db if user has albums
+            foreach ($album_array as $album) {
+                echo "<div class=\"col-4\" >\n";
+                echo "<div class='card'>";
+                // thumbnail
+                echo "<img class='card-img-top' src='" . $album['imageurl'] . "' alt='" . $album['title'] . "'>";
+                echo "<div class='card-body'>";
+                // album title
+                echo "<h5 class='card-title'> " . $album['title'] . " </h5>";
+                // view album detail
+                echo "<a href='album-detail.php?id=" . $album['idalbum'] . "' class='btn btn-primary'>Album detail</a>";
+                echo "</div></div></div>";
             }
         } else {
             echo "You don't have any album. Let's create one!";
@@ -186,6 +191,7 @@ if (isset($_SESSION["iduser"])) {
 } else {
     echo "Please log in to view your albums.";
 }
+echo "</div></div>\n";
 ?>
 
 	<!-- Footer -->

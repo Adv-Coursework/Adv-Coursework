@@ -38,14 +38,14 @@ body, html {
 
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
 			<ul class="navbar-nav mr-auto">
-				<li class="nav-item active"><a class="nav-link"
-					href="Instagraham_Inc.php">Home <span class="sr-only">(current)</span></a>
+				<li class="nav-item "><a class="nav-link"
+					href="Instagraham_Inc.php" style="color:black;">Home <span class="sr-only">(current)</span></a>
 				</li>
 				<?php
-				
+	session_start();
     if (isset($_SESSION["iduser"])) {
         
-        echo "<li class='nav-item'><a class='nav-link' href='upload-form.php' style='color: black;'>Upload</a></li>";
+        echo "<li class='nav-item'><a class='nav-link active' href='upload-form.php' style='color: black;'>Upload</a></li>";
     }
     ?>
 				<li class="nav-item"><a class="nav-link" href="all-albums.php"

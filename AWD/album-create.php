@@ -42,7 +42,7 @@ body, html {
 
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
 			<ul class="navbar-nav mr-auto">
-				<li class="nav-item active"><a class="nav-link"
+				<li class="nav-item "><a class="nav-link"
 					href="Instagraham_Inc.php">Home <span class="sr-only">(current)</span></a>
 				</li>
 				<?php
@@ -52,7 +52,7 @@ body, html {
         echo "<li class='nav-item'><a class='nav-link' href='upload-form.php' style='color: black;'>Upload</a></li>";
     }
     ?>
-				<li class="nav-item"><a class="nav-link" href="all-albums.php"
+				<li class="nav-item active"><a class="nav-link" href="all-albums.php"
 					style="color: black;">Album</a></li>
 	
 				<li class="nav-item dropdown"><a class="nav-link dropdown-toggle"
