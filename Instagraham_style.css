@@ -232,8 +232,7 @@ hr.footer-line {
 /* Style the tab content */
 .tabcontent {
   float: left;
-  padding:0 100px;
-  padding-bottom:30px;
+  padding:22px 100px;
   border: 1px solid #ccc;
   width: 60%;
   border-left: none;
