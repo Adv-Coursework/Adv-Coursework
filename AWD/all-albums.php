@@ -109,7 +109,7 @@ if (isset($_SESSION["iduser"])) {
 		<!-- User cant create and view album if not logged in -->
 		<?php
 if (isset($_SESSION["iduser"])) {
-    echo "<button type='button' class='btn btn-primary' data-toggle='modal'data-target='#create-album'>Create new album</button>'";
+    echo "<button type='button' class='btn btn-primary' data-toggle='modal'data-target='#create-album'>Create new album</button>";
 }
 ?>
 		 
@@ -124,7 +124,7 @@ if (isset($_SESSION["iduser"])) {
 							<h5 class="modal-title" id="ModalLabel">Create Album</h5>
 							<button type="button" class="close" data-dismiss="modal"
 								aria-label="Close">
-								<span aria-hidden="true">×</span>
+								<span aria-hidden="true">x</span>
 							</button>
 						</div>
 						<div class="modal-body">
