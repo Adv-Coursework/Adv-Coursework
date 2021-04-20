@@ -184,9 +184,10 @@ if (isset($_SESSION["iduser"])) {
                 // album title
                 echo "<h5 class='card-title'> " . $album['title'] . " </h5>";
                 // view album detail
+                echo "<div id='buttons-wrapper'>";
                 echo "<a href='album-detail.php?id=" . $album['idalbum'] . "' class='btn btn-primary'>Album detail</a>";
-                echo "<a href = \"album-delete.php?id=" . $album["idalbum"] . " \" >Delete album</a>";
-                echo "</div></div></div>";
+                echo "<a href='album-delete.php?id=" . $album["idalbum"] . "' class='btn btn-danger'>Delete album</a>";
+                echo "</div></div></div></div>";
             }
         } else {
             echo "You don't have any album. Let's create one!";

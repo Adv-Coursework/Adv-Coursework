@@ -39,6 +39,5 @@ window.location.replace('signup-test.php');
 </script>";
 exit;
 ?>
-
 </body>
 </html>

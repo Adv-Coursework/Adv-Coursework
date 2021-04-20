@@ -1,3 +1,4 @@
+
 <?php
 // Initialize the session
 session_start();
@@ -95,19 +96,20 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 }
 ?>
  
-<!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Login</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/Instagraham_style.css">
-	<link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/geni.css" type="text/css">
-    <style>
-        body{ font: 14px sans-serif; }
-       
-    </style>
+<title>Home</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="css/Instagraham_style.css">
+<link rel="stylesheet" href="css/bootstrap.min.css">
+<link rel="stylesheet"
+	href="https://fonts.googleapis.com/css?family=Karma">
+<style>
+body, h1, h2, h3, h4, h5, h6 {
+	font-family: "Karma", sans-serif
+}
+</style>
 </head>
 <body>
 	<!-- Top navigator -->
@@ -126,8 +128,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
 			<ul class="navbar-nav mr-auto">
-				<li class="nav-item active"><a class="nav-link"
-					href="Instagraham_Inc.php">Home <span class="sr-only">(current)</span></a>
+				<li class="nav-item"><a class="nav-link"
+					href="Instagraham_Inc.php" style="color:black;">Home <span class="sr-only">(current)</span></a>
 				</li>
 				<?php
 				
@@ -138,13 +140,17 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     ?>
 				<li class="nav-item"><a class="nav-link" href="all-albums.php"
 					style="color: black;">Album</a></li>
+	
 				<li class="nav-item dropdown"><a class="nav-link dropdown-toggle"
 					href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
 					aria-haspopup="true" aria-expanded="false" style="color: black;">
 						Account </a>
 					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-						<a class="dropdown-item" href="user-prof.php"
-							style="color: black;">Profile</a> 
+						<?php 
+						if (isset($_SESSION["iduser"])) {
+						    echo "<a class='dropdown-item' href='user-prof.php' style='color: black;''>Profile</a> ";
+						}
+						?>
 							<a class="dropdown-item" href="login-test.php" style="color: black;">Login</a> 
 							<a class="dropdown-item" href="logout-test.php" style="color: black;">Logout</a>
 						<div class="dropdown-divider"></div>
@@ -156,12 +162,15 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 			<?php
             if (isset($_SESSION["iduser"])) {
                 echo $_SESSION["username"];
+            } else{
+                echo "guest user!";
             }
             ?>
 			</p>
 			</div>
 		</div>
 	</nav>
+	
 	
     <div class="wrapper">
         <h2>Login</h2>
@@ -190,8 +199,5 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             <p>Don't have an account? <a href="signup-test.php">Sign up now</a>.</p>
         </form>
     </div>
-    <script src="js/jquery-3.6.0.slim.min.js"></script>
-	<script src="js/popper.min.js"></script>
-	<script src="js/bootstrap.min.js"></script>
 </body>
 </html>
