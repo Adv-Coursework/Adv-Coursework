@@ -67,18 +67,16 @@ if ($res = $mysqli->query("SELECT title,imageurl,idalbum,iduser FROM album WHERE
         echo "<li class='nav-item'><a class='nav-link' href='upload-form.php' style='color: black;'>Upload</a></li>";
     }
     ?>
-				<li class="nav-item"><a class="nav-link" href="album.php"
+				<li class="nav-item"><a class="nav-link" href="all-album.php"
 					style="color: black;">Album</a></li>
 				<li class="nav-item dropdown"><a class="nav-link dropdown-toggle"
 					href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
 					aria-haspopup="true" aria-expanded="false" style="color: black;">
 						Account </a>
 					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-						<a class="dropdown-item" href="user-prof.php "
-							style="color: black;">Profile</a> <a class="dropdown-item"
-							href="login-test.php" style="color: black;">Login</a> <a
-							class="dropdown-item" href="logout-test.php"
-							style="color: black;">Logout</a>
+						<a class="dropdown-item" href="user-prof.php" style="color: black;">Profile</a>
+						<a class="dropdown-item" href="login-test.php" style="color: black;">Login</a> 
+						<a class="dropdown-item" href="logout-test.php" style="color: black;">Logout</a>
 						<div class="dropdown-divider"></div>
 						<a class="dropdown-item" data-toggle="modal" data-target="#myModal"
 							style="color: red;">Delete Account (Login required)</a>
@@ -89,7 +87,9 @@ if ($res = $mysqli->query("SELECT title,imageurl,idalbum,iduser FROM album WHERE
                     			<?php
                     if (isset($_SESSION["iduser"])) {
                         echo $_SESSION["username"];
-                    }
+                    }else{
+			echo "guest user!";
+		    }
                     ?>
 			</p>
 			</div>
