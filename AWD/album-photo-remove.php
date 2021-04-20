@@ -90,25 +90,22 @@ if (isset($_SESSION["iduser"])) {
     <div id="background-container">
     <div id="wrapper-system">
     <?php
+
+   
     // retreive user input
     if (isset($_POST["submit"])) {
-        $albumid = $_POST["idalbum"];
+        $photoid = $_POST["idphoto"];
     }
     
     // get parameter value from url
-    $albumid = htmlspecialchars($_GET["id"]);
+    $photoid = htmlspecialchars($_GET["id"]);
     
     // Query remove relation btwn album and album_photo
-    $q1 = "DELETE FROM album_photo WHERE idalbum =" . $albumid . ";";
-    $q2 = "DELETE FROM album WHERE idalbum =". $albumid.";";
-    if ($mysqli->query($q1)) {
-        if ($mysqli->query($q2)){
-        echo "<p>Album deleted.</p>";
+    $q = "DELETE FROM album_photo WHERE idphoto =" . $photoid . ";";
+    if ($mysqli->query($q)) {
+        echo "<p>Photo removed from album.</p>";
         }
-        else{
-            echo "Something went wrong. Please try again later.";
-        }
-    } else {
+    else {
         echo "Something went wrong. Please try again later.";
     }
     ?>
@@ -120,4 +117,4 @@ if (isset($_SESSION["iduser"])) {
 	<script src="js/popper.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
 </body>
-</html>(edited)
+</html>

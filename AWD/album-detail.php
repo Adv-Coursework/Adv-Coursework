@@ -136,6 +136,7 @@ body, h1, h2, h3, h4, h5, h6 {
 	                     echo "<a href = \" edit-detail.php?id=" . $image["idphoto"] . " \" > Click to edit detail </a><br>";
 	                     echo "<a href = \" delete-photo.php?id=" . $image["idphoto"] . " \" > Delete </a><br>";
 	                 }
+	                 echo "<a href = \" album-photo-remove.php?id=" . $image["idphoto"] . " \" > Remove from album</a><br>";
 	                 echo "</div>\n";
 	             }
 	         } else {
