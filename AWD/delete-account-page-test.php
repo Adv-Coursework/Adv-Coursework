@@ -57,7 +57,7 @@ if ($mysqli->connect_errno) {
     echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
 }
 
-$q = "SELECT iduser,username FROM users;";
+$q = "SELECT iduser,username FROM creator;";
 // execute SQL query. If there is an error, print an eror message.
 if ($res = $mysqli->query($q)) {
     // set the pointer to the first result. If there are no results, tell the user.
