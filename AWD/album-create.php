@@ -51,7 +51,7 @@ body, html {
         echo "<li class='nav-item'><a class='nav-link' href='upload-form.php' style='color: black;'>Upload</a></li>";
     }
     ?>
-				<li class="nav-item"><a class="nav-link active" href="all-album.php"
+				<li class="nav-item"><a class="nav-link" href="all-album.php"
 					style="color: black;">Album</a></li>
 				<li class="nav-item dropdown"><a class="nav-link dropdown-toggle"
 					href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
@@ -79,6 +79,36 @@ body, html {
 			</div>
 		</div>
 	</nav>
+
+	<!-- Modal for delete account-->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+        <?php 
+        /*When in user is logged in in session, delete user account according to iduser*/
+        $id=$_SESSION['iduser'];
+        $q = "SELECT iduser,username FROM creator WHERE iduser = $id";
+        $rs = mysqli_query($db,$q);
+        $getRowAssoc = mysqli_fetch_assoc($rs);
+       
+        echo "<p><h5>Deleting user". "&nbsp;<b>".$getRowAssoc["username"]. "</b>&nbsp;"."from database! Are you sure?"."</h5></p>";
+        echo "<br>";
+        echo "<h5><center><a href = \"delete-account-test.php?id=" . $getRowAssoc["iduser"] . " \" > Delete </a></center></h5>";
+         ?>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
 
 	<div id="background-container">
 		<div id="wrapper-system">
