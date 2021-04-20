@@ -1,58 +1,18 @@
 <!DOCTYPE html>
 
 <html>
-<head>
-<title>User Profile</title>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="Instagraham_style.css">
-<link rel="stylesheet" href="geni.css" type="text/css">
-<link rel="stylesheet"
-	href="https://fonts.googleapis.com/css?family=Karma">
-<link rel="stylesheet"
-	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<style>
-body, h1, h2, h3, h4, h5, h6 {
-	font-family: "Karma", sans-serif
-}
-
-body, html {
-	height: 100%;
-	margin: 0;
-}
-
-
-</style>
-</head>
-
-<!-- Retrieve data from user -->
-<?php
-session_start();
-
-// Check if the user is logged in, if not then redirect him to login page
-if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
-    echo "Please login to access to the page.";
-    exit;
-}
-
-include 'connection.php';
-$id = $_SESSION['iduser'];
-$query = mysqli_query($db, "SELECT * FROM users where iduser='$id'") or die(mysqli_error());
-$row = mysqli_fetch_array($query);
-?>
-
-<html>
-<head>
-<title>Home</title>
+<title>Upload photo</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="css/Instagraham_style.css">
 <link rel="stylesheet" href="css/bootstrap.min.css">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Karma">
+<link rel="stylesheet"
+	href="https://fonts.googleapis.com/css?family=Karma">
 <style>
 body, h1, h2, h3, h4, h5, h6 {
 	font-family: "Karma", sans-serif
 }
+
 </style>
 </head>
 <body>
@@ -72,8 +32,8 @@ body, h1, h2, h3, h4, h5, h6 {
 
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
 			<ul class="navbar-nav mr-auto">
-				<li class="nav-item"><a class="nav-link"
-					href="Instagraham_Inc.php" style="color:black;">Home <span class="sr-only">(current)</span></a>
+				<li class="nav-item active"><a class="nav-link"
+					href="Instagraham_Inc.php">Home <span class="sr-only">(current)</span></a>
 				</li>
 				<?php
 				
@@ -115,47 +75,53 @@ body, h1, h2, h3, h4, h5, h6 {
 		</div>
 	</nav>
 
-	<div class="content">
-		<div id="top-layer">
-				<img id="user-img" src="user-prof icon.png"></img>
-			<div id="name">
-			<?php 
-			echo "<h1>" . $row["username"] . "&nbsp;" . "(" . $row["nickname"] . ")". "</h1>";
-			?>
-			</div>
-			<button onclick="document.location='edit-acc.php'" id="editacc-btn"
-				type="button">
-				<i class="fa fa-cog"></i> Edit Account
-			</button>
-		</div>
 
-	</div>
+	<div id="background-container">
+	<div id="wrapper-system">
+    <?php
+    $mysqli = new mysqli("localhost", "root", "", "5114asst1");
+    if ($mysqli->connect_errno) {
+        echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
+    }
 
+    if (isset($_POST["submit"])) {
+        $imageID = $_POST["idphoto"];
+        $albumID = $_POST["album"];
+    }
 
-	<!-- Footer -->
-	<!-- Footer boarderline -->
+    //check duplicate
+     $check = false;
+    
+     if ($res = $mysqli->query("SELECT * FROM album_photo WHERE (idphoto =" . $imageID . " AND idalbum =" . $albumID . " );")) {
+        if (!$res->data_seek(0)) {
+            $check = true;
+        } else {
+            echo "The photo already in the album";
+        }
+    } else {
+        echo "Query error: please contact your system adminstrator.";
+    }
+    
+    // Create query to insert photo into album
+    if ($check){
+    $q = "INSERT INTO album_photo (idphoto, idalbum) VALUES (".$imageID." , ".$albumID.")";
 
-	<hr class="footer-line">
+    if ($mysqli->query($q)) {
+        echo "<p>Photo  added into your album.</p>";
+    } else {
+        echo "<p>Something went wrong. Please contact your system adminstrator.</p>";
+    }
+    }
+    
+    ?>
+        <!--Hyperlink to different page-->
+	<a href="all-albums.php"> Back to Album</a>
+    </div>
 
-	<footer class="footer">
-		<div class="footer-about">
-			<h3>About Us</h3>
-			<p>Instagraham Inc.'s main product is a thinly-veiled copy of
-				Instagram.</p>
-		</div>
-		<div class="footer-contact">
-			<h3 style="text-align: center;">Contact</h3>
-			<ul>
-				<li>Email: instagrahaminc@insta.com</li>
-				<li>Tel: +603-12345678</li>
-			</ul>
-		</div>
-		<div class="footer-office">
-			<h3>Office Hour</h3>
-			<p>9:00AM to 6:00PM</p>
-			<p>Monday to Saturday</p>
-		</div>
-	</footer>
-
+    </div>
+	<script src="js/jquery-3.6.0.slim.min.js"></script>
+	<script src="js/popper.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
 </body>
+
 </html>

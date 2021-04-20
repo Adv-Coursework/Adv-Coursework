@@ -3,31 +3,38 @@
 // Initialize the session
 session_start();
 
+// Get parameter value from url
+$albumid = htmlspecialchars($_GET["id"]);
+
 // Connect to db
 $mysqli = new mysqli("localhost", "root", "", "5114asst1");
 if ($mysqli->connect_errno) {
     echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
 }
 
-// Retrieve data
-if ($res = $mysqli->query("SELECT title,comment,imageurl,idphoto, iduser FROM photo;")) {
+
+// Retrieve album data
+$check = false;
+
+if ($res = $mysqli->query("SELECT idalbum, iduser, title FROM album WHERE idalbum = " . $albumid . ";")) {
     if ($res->data_seek(0)) {
-        $image_array = array();
         while ($rows = $res->fetch_assoc()) {
-            $image_array[] = $rows;
+            $album = $rows;
         }
+        $check = true;
     } else {
-        echo "No photo found";
+        echo "No album found";
     }
 } else {
-    echo "Query error: please contact your system adminstrator.";
+    echo "Album Query error: please contact your system adminstrator.";
 }
+
 
 ?>
 
 <html>
 <head>
-<title>Home</title>
+<title>Album</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="css/Instagraham_style.css">
@@ -42,10 +49,10 @@ body, h1, h2, h3, h4, h5, h6 {
 
 </head>
 <body>
-	<!-- Top navigator -->
+		<!-- Top navigator -->
 	<nav class="navbar navbar-expand-lg navbar-light bg-light">
 		<!-- add logo with link to home page -->
-		<a class="navbar-brand" style="width: 10%;" href="Instagraham_Inc.php"><img
+		<a class="navbar-brand" style="width: 10%;" href="Instagraham_Inc.php" ><img
 			src="InstagrahamInc.png" alt="InstagrahamInc_Logo"
 			style="width: 100%; object-fit: contain;"></a>
 		<!-- responsive collapse navbar -->
@@ -58,7 +65,7 @@ body, h1, h2, h3, h4, h5, h6 {
 
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
 			<ul class="navbar-nav mr-auto">
-				<li class="nav-item active"><a class="nav-link"
+				<li class="nav-item "><a class="nav-link"
 					href="Instagraham_Inc.php" style="color:black;">Home <span class="sr-only">(current)</span></a>
 				</li>
 				<?php
@@ -68,19 +75,15 @@ body, h1, h2, h3, h4, h5, h6 {
         echo "<li class='nav-item'><a class='nav-link' href='upload-form.php' style='color: black;'>Upload</a></li>";
     }
     ?>
-				<li class="nav-item"><a class="nav-link" href="all-albums.php"
+				<li class="nav-item"><a class="nav-link active" href="all-albums.php"
 					style="color: black;">Album</a></li>
-	
 				<li class="nav-item dropdown"><a class="nav-link dropdown-toggle"
 					href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
 					aria-haspopup="true" aria-expanded="false" style="color: black;">
 						Account </a>
 					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-						<?php 
-						if (isset($_SESSION["iduser"])) {
-						    echo "<a class='dropdown-item' href='user-prof.php' style='color: black;''>Profile</a> ";
-						}
-						?>
+						<a class="dropdown-item" href="user-prof.php"
+							style="color: black;">Profile</a> 
 							<a class="dropdown-item" href="login-test.php" style="color: black;">Login</a> 
 							<a class="dropdown-item" href="logout-test.php" style="color: black;">Logout</a>
 						<div class="dropdown-divider"></div>
@@ -92,8 +95,6 @@ body, h1, h2, h3, h4, h5, h6 {
 			<?php
             if (isset($_SESSION["iduser"])) {
                 echo $_SESSION["username"];
-            } else{
-                echo "guest user!";
             }
             ?>
 			</p>
@@ -101,26 +102,54 @@ body, h1, h2, h3, h4, h5, h6 {
 		</div>
 	</nav>
 
-
-	<div class="content">
+	
+	<div class="jumbotron">
+		<div class="container d-flex justify-content-between">
+			<h2>  <?php echo $album['title'];?>	</h2>
+			
+			<a class="btn btn-primary" href=<?php echo "album-edit.php?id=".$album['idalbum']."" ?>>Edit album detail</a>
+		</div>
+	</div>
+	
+    <!--view all photos in albums --> 
+	 <div class="container">
+	 <div class="row">
+	 
 	 <?php
-foreach ($image_array as $image) {
-    echo "<div class=\"photo-container\" >\n";
-    echo "<div class=\"photo-frame\" >\n";
-    echo "<img class=\"photo\" src = \"" . $image["imageurl"] . "\" alt= \"" . $image["title"] . "\" />";
-    echo "</div>\n";
-    echo "<h3>Title: " . $image["title"] . "</h3>";
-    echo "<p>Comment: " . $image["comment"] . "</p>";
-    if (isset($_SESSION["iduser"])) {
-        echo "<a href = \"album-addphoto-form.php?id=" . $image["idphoto"] . " \" class='btn btn-success' > Add to album </a><br>";
-        if ($image["iduser"] == $_SESSION["iduser"]){
-            echo "<a href = \"edit-detail.php?id=" . $image["idphoto"] . " \"  > Click to edit detail </a><br>";
-            echo "<a href = \"delete-photo.php?id=" . $image["idphoto"] . " \" > Delete </a><br>";
-        }
-    }
-    echo "</div>\n";
-}
-?>
+	 // Retrieve photo data
+	 if ($check) {
+	     if ($res = $mysqli->query("SELECT P.idphoto, P.imageurl, P.iduser, P.title, P.comment FROM photo P INNER JOIN album_photo AP ON P.idphoto=AP.idphoto WHERE AP.idalbum = " . $albumid . ";")) {
+	         if ($res->data_seek(0)) {
+	             $image_array = array();
+	             while ($rows = $res->fetch_assoc()) {
+	                 $image_array[] = $rows;
+	             }
+	             //fetch all photos
+	             foreach ($image_array as $image) {
+	                 echo "<div class=\"col-4\" >\n";
+	                 echo "<div class=\"photo-frame\" >\n";
+	                 echo "<img class=\"photo\" src = \"" . $image["imageurl"] . "\" alt= \"" . $image["title"] . "\" />";
+	                 echo "</div>\n";
+	                 echo "<h3>Title: " . $image["title"] . "</h3>";
+	                 echo "<p>Comment: " . $image["comment"] . "</p>";
+	                 if ($image["iduser"] == $_SESSION["iduser"]) {
+	                     echo "<a href = \" edit-detail.php?id=" . $image["idphoto"] . " \" > Click to edit detail </a><br>";
+	                     echo "<a href = \" delete-photo.php?id=" . $image["idphoto"] . " \" > Delete </a><br>";
+	                 }
+	                 echo "<a href = \" album-photo-remove.php?id=" . $image["idphoto"] . " \" > Remove from album</a><br>";
+	                 echo "</div>\n";
+	             }
+	         } else {
+	             echo "No photo found in this album!";
+	         }
+	     } else {
+	         echo "Photo Query error: please contact your system adminstrator.";
+	     }
+	 }
+	 
+        
+      ?>
+	</div>
 	</div>
 	<!-- Footer -->
 	<!-- Footer boarderline -->

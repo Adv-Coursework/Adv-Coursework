@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 
 <html>
-<title>Upload photo</title>
+<title>Thumbnail upload</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="css/Instagraham_style.css">
@@ -38,14 +38,14 @@ body, h1, h2, h3, h4, h5, h6 {
 				</li>
 				
 				<?php
-    if (isset($_SESSION["iduser"])) {
-        
-        echo "<li class='nav-item'><a class='nav-link' href='upload-form.php' style='color: black;'>Upload</a></li>";
-    }
-    ?>
-				<li class="nav-item active"><a class="nav-link" href="upload-form.php"
+                    if (isset($_SESSION["iduser"])) {
+                        
+                        echo "<li class='nav-item'><a class='nav-link' href='upload-form.php' style='color: black;'>Upload</a></li>";
+                    }
+                ?>
+				<li class="nav-item"><a class="nav-link" href="upload-form.php"
 					style="color: black;">Upload</a></li>
-				<li class="nav-item"><a class="nav-link" href="album.php"
+				<li class="nav-item active"><a class="nav-link" href="album.php"
 					style="color: black;">Album</a></li>
 				<li class="nav-item dropdown"><a class="nav-link dropdown-toggle"
 					href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
@@ -62,11 +62,11 @@ body, h1, h2, h3, h4, h5, h6 {
 			</ul>
 			<div class="d-inline-block">
 				<p style="margin: 0px"> Welcome,
-			<?php
-if (isset($_SESSION["iduser"])) {
-    echo $_SESSION["username"];
-}
-?>
+            <?php
+                if (isset($_SESSION["iduser"])) {
+                    echo $_SESSION["username"];
+                }
+            ?>
 			</p>
 			</div>
 		</div>
@@ -97,26 +97,26 @@ if (isset($_SESSION["iduser"])) {
     }
 
     // Check file size
-    if ($_FILES["fileToUpload"]["size"] > 80000000) {
-        echo "Sorry, your file is too large.(Must be smaller than 10MB) <br>";
+    if ($_FILES["fileToUpload"]["size"] > 160000000) {
+        echo "Sorry, your file is too large.(Must be smaller than 2MB) <br>";
         $uploadOk = 0;
     }
 
     // Allow certain file formats
     if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "gif") {
-        echo "Sorry, only JPG, JPEG, PNG & GIF files are allowed.<br>";
+        echo "Sorry, only JPG, JPEG, PNG & GIF files are allowed as thumbnail.<br>";
         $uploadOk = 0;
     }
 
     // Check if $uploadOk is set to FALSE by an error
     if ($uploadOk == 0) {
-        echo "Failure: your file was not uploaded.<br>";
+        echo "Failure: your thumbnail was not uploaded.<br>";
     } else {
         // if everything is ok, move the file from the temporary location to its permanent location
         if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_dir . time() . "." . $imageFileType)) {
             echo "The file " . htmlspecialchars(basename($_FILES["fileToUpload"]["name"])) . " has been uploaded.<br>";
         } else {
-            echo "Sorry, there was an error uploading your file.<br>";
+            echo "Sorry, there was an error uploading your thumbnail.<br>";
         }
     }
 
@@ -128,17 +128,19 @@ if (isset($_SESSION["iduser"])) {
             echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
         }
 
-        $q = "INSERT INTO photo (imageurl,title,comment,iduser) VALUES ('" . $target_dir . time() . "." . $imageFileType . "','" . $image_name . "','" . addslashes($_POST['comment']) . "',".$_SESSION["iduser"].")";
+        $q = "UPDATE album SET imageurl='" . $target_dir . time() . "." . $imageFileType . "',
+             title = '".$_POST['title']."'
+             WHERE idalbum = ".$_POST['albumid']."";
 
         if ($mysqli->query($q)) {
-            echo "<p>File added to database.</p>";
+            echo "<p>Thumbnail added to database.</p>";
         } else {
             echo "<p>Something went wrong. Please contact your system adminstrator.</p>";
         }
     }
     ?>
     <!--Hyperlink to different page-->
-	<a href="Instagraham_Inc.php"> Back to Home</a>
+	<a href="all-albums.php"> Back to Album</a>
 	</div>
 	</div>
 		<script src="js/jquery-3.6.0.slim.min.js"></script>

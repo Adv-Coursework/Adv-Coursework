@@ -4,7 +4,8 @@
 <title>Upload photo</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="Instagraham_style.css">
+<link rel="stylesheet" href="css/Instagraham_style.css">
+<link rel="stylesheet" href="css/bootstrap.min.css">
 <link rel="stylesheet"
 	href="https://fonts.googleapis.com/css?family=Karma">
 <style>
@@ -26,14 +27,19 @@ body, h1, h2, h3, h4, h5, h6 {
 	<div id="background-container">
 	<div id="wrapper-system">
     <?php
+    session_start();
     $uploadOk = FALSE;
 
     // retreive user input
     if (isset($_POST["submit"]) && $_POST["title"] != "") {
+        $iduser = $_POST["iduser"];
         $editTitle = $_POST["title"];
         $imageId = $_POST["id"];
         $editComment = $_POST["comment"];
+        //verification
+        if ($iduser == $_SESSION["iduser"]){
         $uploadOk = 1;
+         }
     }
 
     // update to datebase
@@ -54,7 +60,7 @@ body, h1, h2, h3, h4, h5, h6 {
             echo "<p>Something went wrong. Please contact your system adminstrator.</p>";
         }
     } else {
-        echo "<p>Something went wrong. Please contact your system adminstrator.</p>";
+        echo "<p>Form submission error.</p>";
     }
 
     ?>
@@ -62,5 +68,8 @@ body, h1, h2, h3, h4, h5, h6 {
 	<a href=" Instagraham_Inc.php"> Back to Home</a>
     </div>
 	</div>
+	<script src="js/jquery-3.6.0.slim.min.js"></script>
+	<script src="js/popper.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
 </body>
 </html>

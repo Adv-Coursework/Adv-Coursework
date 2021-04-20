@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="css/Instagraham_style.css">
 <link rel="stylesheet" href="css/bootstrap.min.css">
-<link rel="stylesheet" href="geni.css" type="text/css">
+<link rel="stylesheet" href="css/geni.css" type="text/css">
 <link rel="stylesheet"
 	href="https://fonts.googleapis.com/css?family=Karma">
 <link rel="stylesheet"
@@ -111,7 +111,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body>
 
 	<!-- Top navigator -->
-	<!-- Top navigator -->
 	<nav class="navbar navbar-expand-lg navbar-light bg-light">
 		<!-- add logo with link to home page -->
 		<a class="navbar-brand" style="width: 10%;" href="Instagraham_Inc.php"><img
@@ -136,8 +135,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo "<li class='nav-item'><a class='nav-link' href='upload-form.php' style='color: black;'>Upload</a></li>";
     }
     ?>
-				<li class="nav-item"><a class="nav-link" href="upload-form.php"
-					style="color: black;">Upload</a></li>
 				<li class="nav-item"><a class="nav-link" href="album.php"
 					style="color: black;">Album</a></li>
 				<li class="nav-item dropdown"><a class="nav-link dropdown-toggle"
