@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 
 <html>
-<title>Upload photo</title>
+<title>Add photo</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="css/Instagraham_style.css">
