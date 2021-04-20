@@ -24,7 +24,7 @@ if ($res = $mysqli->query("SELECT title,comment,imageurl,idphoto FROM photo;")) 
 
 <html>
 <head>
-<title>Home</title>
+<title>Albums</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="css/Instagraham_style.css">
@@ -176,12 +176,13 @@ if (isset($_SESSION["iduser"])) {
                 echo "<div class=\"col-4\" >\n";
                 echo "<div class='card'>";
                 // thumbnail
-                echo "<img class='card-img-top' src='" . $album['imageurl'] . "' alt='" . $album['title'] . "'>";
+                echo "<img class='card-img-top' src='" . $album['imageurl'] . "' alt='Thumbnail for " . $album['title'] . "'>";
                 echo "<div class='card-body'>";
                 // album title
                 echo "<h5 class='card-title'> " . $album['title'] . " </h5>";
                 // view album detail
                 echo "<a href='album-detail.php?id=" . $album['idalbum'] . "' class='btn btn-primary'>Album detail</a>";
+                echo "<a href = \"album-delete.php?id=" . $album["idalbum"] . " \" >Delete album</a>";
                 echo "</div></div></div>";
             }
         } else {

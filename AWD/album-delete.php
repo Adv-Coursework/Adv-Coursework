@@ -1,18 +1,29 @@
 <!DOCTYPE html>
+<?php 
+// Connect to db
+$mysqli = new mysqli("localhost", "root", "", "5114asst1");
+if ($mysqli->connect_errno) {
+    echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
+}?>
 
 <html>
-<title>Delete album</title>
+<head>
+<title>Albums</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="css/Instagraham_style.css">
+<link rel="stylesheet" href="css/bootstrap.min.css">
 <link rel="stylesheet"
-    href="https://fonts.googleapis.com/css?family=Karma">
+	href="https://fonts.googleapis.com/css?family=Karma">
+
 <style>
 body, h1, h2, h3, h4, h5, h6 {
-    font-family: "Karma", sans-serif
+	font-family: "Karma", sans-serif
 }
-
 </style>
+
+<!--Using for loop to display all images with container for each -->
+
 </head>
 <body>
 	<!-- Top navigator -->
@@ -31,38 +42,46 @@ body, h1, h2, h3, h4, h5, h6 {
 
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
 			<ul class="navbar-nav mr-auto">
-				<li class="nav-item active"><a class="nav-link"
-					href="Instagraham_Inc.php">Home <span class="sr-only">(current)</span></a>
+				<li class="nav-item "><a class="nav-link" href="Instagraham_Inc.php"
+					style="color: black;">Home <span class="sr-only">(current)</span></a>
 				</li>
 				<?php
-				
+    session_start();
     if (isset($_SESSION["iduser"])) {
-        
+
         echo "<li class='nav-item'><a class='nav-link' href='upload-form.php' style='color: black;'>Upload</a></li>";
     }
     ?>
-				<li class="nav-item"><a class="nav-link" href="all-albums.php"
-					style="color: black;">Album</a></li>
+				<li class="nav-item active"><a class="nav-link"
+					href="all-albums.php" style="color: black;">Album</a></li>
+
 				<li class="nav-item dropdown"><a class="nav-link dropdown-toggle"
 					href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
 					aria-haspopup="true" aria-expanded="false" style="color: black;">
 						Account </a>
 					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-						<a class="dropdown-item" href="user-prof.php"
-							style="color: black;">Profile</a> 
-							<a class="dropdown-item" href="login-test.php" style="color: black;">Login</a> 
-							<a class="dropdown-item" href="logout-test.php" style="color: black;">Logout</a>
+						<?php
+    if (isset($_SESSION["iduser"])) {
+        echo "<a class='dropdown-item' href='user-prof.php' style='color: black;''>Profile</a> ";
+    }
+    ?>
+							<a class="dropdown-item" href="login-test.php"
+							style="color: black;">Login</a> <a class="dropdown-item"
+							href="logout-test.php" style="color: black;">Logout</a>
 						<div class="dropdown-divider"></div>
-						<a class="dropdown-item" href="delete-account-page-test.php" style="color: red;">Delete Account (Login required)</a>
+						<a class="dropdown-item" href="delete-account-page-test.php"
+							style="color: red;">Delete Account (Login required)</a>
 					</div></li>
 			</ul>
 			<div class="d-inline-block">
 				<p style="margin: 0px"> Welcome,
 			<?php
-            if (isset($_SESSION["iduser"])) {
-                echo $_SESSION["username"];
-            }
-            ?>
+if (isset($_SESSION["iduser"])) {
+    echo $_SESSION["username"];
+} else {
+    echo "guest user!";
+}
+?>
 			</p>
 			</div>
 		</div>
@@ -75,38 +94,28 @@ body, h1, h2, h3, h4, h5, h6 {
    
     // retreive user input
     if (isset($_POST["submit"])) {
-        $album_name = $_POST["album_name"];
+        $albumid = $_POST["idalbum"];
     }
     
     // get parameter value from url
-    $album_name = htmlspecialchars($_GET["idalbum"]);
+    $albumid = htmlspecialchars($_GET["id"]);
     
-    if ($res = $mysqli->query("SELECT idalbum FROM album WHERE idalbum =" . $album_name . ";")) {
-        if ($res->data_seek(0)) {
-            $album_name = array();
-            while ($rows = $res->fetch_assoc()) {
-                $album_name = $rows;
-            }
-        } else {
-            echo "No album found";
+    // Query remove relation btwn album and album_photo
+    $q1 = "DELETE FROM album_photo WHERE idalbum =" . $albumid . ";";
+    $q2 = "DELETE FROM album WHERE idalbum =". $albumid.";";
+    if ($mysqli->query($q1)) {
+        if ($mysqli->query($q2)){
+        echo "<p>Album deleted.</p>";
+        }
+        else{
+            echo "Something went wrong. Please try again later.";
         }
     } else {
-        echo "Query error: please contact your system adminstrator.";
-    }
-    
-    // Delete file from folder according to id acquired
-    unlink($album_name["idalbum"]);
-    // Create query to delete according to image id
-    $q = "DELETE FROM album WHERE idalbum =" . $album_name . ";";
-    
-    if ($mysqli->query($q)) {
-        echo "<p>Delete completed.</p>";
-    } else {
-        echo "<p>Something went wrong. Please contact your system adminstrator.</p>";
+        echo "Something went wrong. Please try again later.";
     }
     ?>
     <!--Hyperlink to different page-->
-    <a href=" Instagraham_Inc.php"> Back to Home</a>
+    <a href="all-albums.php">Back to Albums</a>
     </div>
     </div>
     <script src="js/jquery-3.6.0.slim.min.js"></script>
