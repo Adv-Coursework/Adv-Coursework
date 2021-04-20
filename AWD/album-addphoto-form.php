@@ -68,6 +68,34 @@ body, h1, h2, h3, h4, h5, h6 {
 			</div>
 		</div>
 	</nav>
+
+	<!-- Modal for delete account-->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+        <?php 
+        /*When in user is logged in in session, delete user account according to iduser*/
+        $id=$_SESSION['iduser'];
+        $q = "SELECT iduser,username FROM creator WHERE iduser = $id";
+        $rs = mysqli_query($db,$q);
+        $getRowAssoc = mysqli_fetch_assoc($rs);
+       
+        echo "<p><h5>Deleting user". "&nbsp;<b>".$getRowAssoc["username"]. "</b>&nbsp;"."from database! Are you sure?"."</h5></p>";
+        echo "<br>";
+        echo "<h5><center><a href = \"delete-account-test.php?id=" . $getRowAssoc["iduser"] . " \" > Delete </a></center></h5>";
+         ?>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
     </div>
   </div>
 
