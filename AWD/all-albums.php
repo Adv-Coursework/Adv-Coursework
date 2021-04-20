@@ -109,7 +109,7 @@ if (isset($_SESSION["iduser"])) {
 		<!-- User cant create and view album if not logged in -->
 		<?php
 if (isset($_SESSION["iduser"])) {
-    echo "<button type='button' class='btn btn-primary' data-toggle='modal'data-target='#create-album'>Create new album</button>";
+    echo "<button type='button' class='btn btn-primary btn-lg' data-toggle='modal'data-target='#create-album'>Create new album</button>";
 }
 ?>
 		 
@@ -184,7 +184,7 @@ if (isset($_SESSION["iduser"])) {
                 // album title
                 echo "<h5 class='card-title'> " . $album['title'] . " </h5>";
                 // view album detail
-                echo "<a href='album-detail.php?id=" . $album['idalbum'] . "' class='btn btn-primary'>Album detail</a>";
+                echo "<a href='album-detail.php?id=" . $album['idalbum'] . "' class='btn btn-info' style='margin:5px;'>Album detail</a>";
                 echo "<a href='album-delete.php?id=" . $album["idalbum"] . "' class='btn btn-danger'>Delete album</a>";
                 echo "</div></div></div>";
             }

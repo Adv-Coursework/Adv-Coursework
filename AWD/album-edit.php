@@ -59,7 +59,7 @@ if ($res = $mysqli->query("SELECT title,imageurl,idalbum,iduser FROM album WHERE
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
 			<ul class="navbar-nav mr-auto">
 				<li class="nav-item "><a class="nav-link"
-					href="Instagraham_Inc.php">Home <span class="sr-only">(current)</span></a>
+					href="Instagraham_Inc.php" style="color:black;">Home <span class="sr-only">(current)</span></a>
 				</li>
 				<?php
 				
@@ -95,7 +95,8 @@ if ($res = $mysqli->query("SELECT title,imageurl,idalbum,iduser FROM album WHERE
 		</div>
 	</nav>
 
-	<div class="container">    
+	<div id="background-container">
+		<div id="wrapper">
         <!--Display album details-->
         <!-- edit username & email tab content -->
 		<div id="album-edit" class="row">
@@ -104,11 +105,12 @@ if ($res = $mysqli->query("SELECT title,imageurl,idalbum,iduser FROM album WHERE
 				<label>Album title :</label> 
 				<input type="text" id="title" name="title" value="<?= $album_array["title"]?>"><br> <br> 
 				<label>Upload a thumbnail :</label> 
-				<input type="file" name="fileToUpload" id="fileToUpload">
+				<input type="file" name="fileToUpload" id="fileToUpload" style='margin-bottom:5px;'>
 				<br><input type="submit" value="Update album" name="submit">
 				<input type="hidden" id="id" name="albumid" value="<?=$albumid?>">
 			</form>
 		</div>
+		</div>   
 	</div>	
 
 	<script src="js/jquery-3.6.0.slim.min.js"></script>

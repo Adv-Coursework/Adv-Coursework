@@ -34,7 +34,7 @@ body, h1, h2, h3, h4, h5, h6 {
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
 			<ul class="navbar-nav mr-auto">
 				<li class="nav-item"><a class="nav-link"
-					href="Instagraham_Inc.php">Home <span class="sr-only">(current)</span></a>
+					href="Instagraham_Inc.php" style='color: black;'>Home <span class="sr-only">(current)</span></a>
 				</li>
 				
 				<?php
@@ -88,35 +88,35 @@ if (isset($_SESSION["iduser"])) {
     if (isset($_POST["submit"])) {
         $check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
         if ($check !== false) {
-            echo "File is an image - " . $check["mime"] . ".<br>";
+            echo "<h3>File is an image - " . $check["mime"] . ".</h3><br>";
             $uploadOk = 1;
         } else {
-            echo "File is not an image.<br>";
+            echo "<h3>File is not an image.</h3><br>";
             $uploadOk = 0;
         }
     }
 
     // Check file size
     if ($_FILES["fileToUpload"]["size"] > 80000000) {
-        echo "Sorry, your file is too large.(Must be smaller than 10MB) <br>";
+        echo "<h3>Sorry, your file is too large.(Must be smaller than 10MB)</h3> <br>";
         $uploadOk = 0;
     }
 
     // Allow certain file formats
     if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "gif") {
-        echo "Sorry, only JPG, JPEG, PNG & GIF files are allowed.<br>";
+        echo "<h3>Sorry, only JPG, JPEG, PNG & GIF files are allowed.</h3><br>";
         $uploadOk = 0;
     }
 
     // Check if $uploadOk is set to FALSE by an error
     if ($uploadOk == 0) {
-        echo "Failure: your file was not uploaded.<br>";
+        echo "<h3>Failure: your file was not uploaded.</h3><br>";
     } else {
         // if everything is ok, move the file from the temporary location to its permanent location
         if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_dir . time() . "." . $imageFileType)) {
-            echo "The file " . htmlspecialchars(basename($_FILES["fileToUpload"]["name"])) . " has been uploaded.<br>";
+            echo "<h3>The file " . htmlspecialchars(basename($_FILES["fileToUpload"]["name"])) . " has been uploaded.</h3><br>";
         } else {
-            echo "Sorry, there was an error uploading your file.<br>";
+            echo "<h3>Sorry, there was an error uploading your file.</h3><br>";
         }
     }
 
@@ -125,20 +125,20 @@ if (isset($_SESSION["iduser"])) {
         $mysqli = new mysqli("localhost", "root", "", "5114asst1");
 
         if ($mysqli->connect_errno) {
-            echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
+            echo "<h3>Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
         }
 
         $q = "INSERT INTO photo (imageurl,title,comment,iduser) VALUES ('" . $target_dir . time() . "." . $imageFileType . "','" . $image_name . "','" . addslashes($_POST['comment']) . "',".$_SESSION["iduser"].")";
 
         if ($mysqli->query($q)) {
-            echo "<p>File added to database.</p>";
+            echo "<h3>File added to database.</h3>";
         } else {
-            echo "<p>Something went wrong. Please contact your system adminstrator.</p>";
+            echo "<h3>Something went wrong. Please contact your system adminstrator.</h3>";
         }
     }
     ?>
     <!--Hyperlink to different page-->
-	<a href="Instagraham_Inc.php"> Back to Home</a>
+	<a href="Instagraham_Inc.php" class="btn btn-primary btn-lg"> Back to Home</a>
 	</div>
 	</div>
 		<script src="js/jquery-3.6.0.slim.min.js"></script>

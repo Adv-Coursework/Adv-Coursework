@@ -81,7 +81,7 @@ body, h1, h2, h3, h4, h5, h6 {
     <?php
     $mysqli = new mysqli("localhost", "root", "", "5114asst1");
     if ($mysqli->connect_errno) {
-        echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
+        echo "<h4>Failed to connect to MySQL: (" . $mysqli->connect_errno . ") </h4>" . $mysqli->connect_error;
     }
 
     if (isset($_POST["submit"])) {
@@ -96,10 +96,10 @@ body, h1, h2, h3, h4, h5, h6 {
         if (!$res->data_seek(0)) {
             $check = true;
         } else {
-            echo "The photo already in the album";
+            echo "<h4>The photo already in the album</h4>";
         }
     } else {
-        echo "Query error: please contact your system adminstrator.";
+        echo "<h4>Query error: please contact your system adminstrator.</h4>";
     }
     
     // Create query to insert photo into album
@@ -107,15 +107,15 @@ body, h1, h2, h3, h4, h5, h6 {
     $q = "INSERT INTO album_photo (idphoto, idalbum) VALUES (".$imageID." , ".$albumID.")";
 
     if ($mysqli->query($q)) {
-        echo "<p>Photo  added into your album.</p>";
+        echo "<h4>Photo  added into your album.</h4>";
     } else {
-        echo "<p>Something went wrong. Please contact your system adminstrator.</p>";
+        echo "<h4>Something went wrong. Please contact your system adminstrator.</h4>";
     }
     }
     
     ?>
         <!--Hyperlink to different page-->
-	<a href="all-albums.php"> Back to Album</a>
+	<a href="all-albums.php" class="btn btn-primary"> Back to Album</a>
     </div>
 
     </div>

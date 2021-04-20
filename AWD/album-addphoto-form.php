@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 
 <html>
-<title>Upload photo</title>
+<title>Add Photo into Album</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="css/Instagraham_style.css">
@@ -75,7 +75,7 @@ if (isset($_SESSION["iduser"])) {
     session_start();
     $mysqli = new mysqli("localhost", "root", "", "5114asst1");
     if ($mysqli->connect_errno) {
-        echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
+        echo "<h4>Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
     }
 
     // get parameter value from url
@@ -90,10 +90,10 @@ if (isset($_SESSION["iduser"])) {
             }
             $check = true;
         } else {
-            echo "No photo found";
+            echo "<h4>No photo found</h4>";
         }
     } else {
-        echo "Query error: please contact your system adminstrator.";
+        echo "<h4>Query error: please contact your system adminstrator.</h4>";
     }
 
     // Create query to insert photo into album
@@ -107,25 +107,25 @@ if (isset($_SESSION["iduser"])) {
                     $album_array[] = $rows2;
                 }
                 echo "<form action='album-addphoto.php' method='post' enctype='multipart/form-data' >";
-                echo "<label for='album'>Choose an album:</label>";
+                echo "<label for='album'style='margin-right:5px;'>Choose an album:</label>";
                 echo "<select name='album' id='album'>";
                 foreach ($album_array as $key => $album) {
-                    echo "<option value='" . $album['idalbum'] . "'> " . $album['title'] . "</option>";
+                    echo "<option value='" . $album['idalbum'] . "'  > " . $album['title'] . "</option>";
                 }
                 echo "</select><br><br>";
                 echo "<input type='hidden' id='idphoto' name='idphoto' value='" . $imageid . "'>";
-                echo "<input type='submit' name='submit' value='Submit'>";
+                echo "<input type='submit' name='submit' value='Submit' style='margin-bottom:5px;' >";
                 echo "</form>";
             } else {
-                echo "No album found";
+                echo "<h4>No album found</h4>";
             }
         } else {
-            echo "<p>Something went wrong. Please contact your system adminstrator.</p>";
+            echo "<h4>Something went wrong. Please contact your system adminstrator.</h4>";
         }
     }
     ?>
         <!--Hyperlink to different page-->
-			<a href="Instagraham_Inc.php"> Back to Home</a>
+			<a href="Instagraham_Inc.php" class="btn btn-primary"> Back to Home</a>
 		</div>
 
 	</div>

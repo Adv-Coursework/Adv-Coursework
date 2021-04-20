@@ -113,11 +113,11 @@ if (isset($_SESSION["iduser"])) {
     }
     ?>
     <!--Hyperlink to different page-->
-    <a href="all-albums.php">Back to Albums</a>
+    <a href="all-albums.php" class="btn btn-primary btn-lg">Back to Albums</a>
     </div>
     </div>
     <script src="js/jquery-3.6.0.slim.min.js"></script>
 	<script src="js/popper.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
 </body>
-</html>(edited)
+</html>

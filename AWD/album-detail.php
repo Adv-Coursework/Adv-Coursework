@@ -133,10 +133,10 @@ body, h1, h2, h3, h4, h5, h6 {
 	                 echo "<h3>Title: " . $image["title"] . "</h3>";
 	                 echo "<p>Comment: " . $image["comment"] . "</p>";
 	                 if ($image["iduser"] == $_SESSION["iduser"]) {
-	                     echo "<a href = \" edit-detail.php?id=" . $image["idphoto"] . " \" > Click to edit detail </a><br>";
-	                     echo "<a href = \" delete-photo.php?id=" . $image["idphoto"] . " \" > Delete </a><br>";
+	                     echo "<a href = \" edit-detail.php?id=" . $image["idphoto"] . " \" class='btn btn-info' style='margin-bottom:5px;' > Edit detail </a><br>";
+	                     echo "<a href = \" delete-photo.php?id=" . $image["idphoto"] . " \" class='btn btn-info' style='margin-bottom:5px;' > Delete from album and gallery </a><br>";
 	                 }
-	                 echo "<a href = \" album-photo-remove.php?id=" . $image["idphoto"] . " \" > Remove from album</a><br>";
+	                 echo "<a href = \" album-photo-remove.php?id=" . $image["idphoto"] . " \" class='btn btn-warning' style='margin-bottom:5px;' > Remove from album</a><br>";
 	                 echo "</div>\n";
 	             }
 	         } else {

@@ -103,14 +103,14 @@ if (isset($_SESSION["iduser"])) {
     // Query remove relation btwn album and album_photo
     $q = "DELETE FROM album_photo WHERE idphoto =" . $photoid . ";";
     if ($mysqli->query($q)) {
-        echo "<p>Photo removed from album.</p>";
+        echo "<h4>Photo removed from album.</h4>";
         }
     else {
         echo "Something went wrong. Please try again later.";
     }
     ?>
     <!--Hyperlink to different page-->
-    <a href="all-albums.php">Back to Albums</a>
+    <a href="all-albums.php" class="btn btn-primary">Back to Albums</a>
     </div>
     </div>
     <script src="js/jquery-3.6.0.slim.min.js"></script>

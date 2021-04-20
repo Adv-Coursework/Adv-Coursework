@@ -43,7 +43,7 @@ body, html {
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
 			<ul class="navbar-nav mr-auto">
 				<li class="nav-item "><a class="nav-link"
-					href="Instagraham_Inc.php">Home <span class="sr-only">(current)</span></a>
+					href="Instagraham_Inc.php" style="color: black;"style="color: black;">Home <span class="sr-only">(current)</span></a>
 				</li>
 				<?php
 				
@@ -111,7 +111,7 @@ body, html {
 
         // If query executed or failed to do so
         if ($mysqli->query($q)) {
-            echo "<p>Album: " . $album_name . "  created.</p>";
+            echo "<h1>Album: " . $album_name . "  created.</h1>";
         } else {
             echo "<p>Something went wrong. Please contact your system adminstrator.</p>";
 		    var_dump($mysqli->error);
@@ -122,7 +122,7 @@ body, html {
 
     ?>
     <!--Hyperlink to different page-->
-			<a href="all-albums.php"> Back to Album</a>
+			<a href="all-albums.php" class="btn btn-primary btn-lg"> Back to Album</a>
 		</div>
 	</div>
 	<script src="js/jquery-3.6.0.slim.min.js"></script>

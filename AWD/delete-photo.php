@@ -32,7 +32,7 @@ body, h1, h2, h3, h4, h5, h6 {
 
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
 			<ul class="navbar-nav mr-auto">
-				<li class="nav-item"><a class="nav-link"
+				<li class="nav-item "><a class="nav-link"
 					href="Instagraham_Inc.php" style="color:black;">Home <span class="sr-only">(current)</span></a>
 				</li>
 				<?php
@@ -74,7 +74,7 @@ body, h1, h2, h3, h4, h5, h6 {
     <?php
     $mysqli = new mysqli("localhost", "root", "", "5114asst1");
     if ($mysqli->connect_errno) {
-        echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
+        echo "<h4>Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
     }
 
     // get parameter value from url
@@ -87,10 +87,10 @@ body, h1, h2, h3, h4, h5, h6 {
                 $image = $rows;
             }
         } else {
-            echo "No photo found";
+            echo "<h4>No photo found</h4>";
         }
     } else {
-        echo "Query error: please contact your system adminstrator.";
+        echo "<h4>Query error: please contact your system adminstrator.</h4>";
     }
 
     // Delete file from folder according to id acquired
@@ -99,13 +99,13 @@ body, h1, h2, h3, h4, h5, h6 {
     $q = "DELETE FROM photo WHERE idphoto =" . $imageid . ";";
 
     if ($mysqli->query($q)) {
-        echo "<p>Delete complete.</p>";
+        echo "<h4>Delete complete.</h4>";
     } else {
-        echo "<p>Something went wrong. Please contact your system adminstrator.</p>";
+        echo "<h4>Something went wrong. Please contact your system adminstrator.</h4>";
     }
     ?>
         <!--Hyperlink to different page-->
-	<a href="Instagraham_Inc.php"> Back to Home</a>
+	<a href="all-albums.php" class="btn btn-primary"> Back to Album</a>
     </div>
 
     </div>

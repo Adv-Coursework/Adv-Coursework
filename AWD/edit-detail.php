@@ -58,8 +58,8 @@ if ($res = $mysqli->query("SELECT title,imageurl,comment,iduser FROM photo WHERE
 
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
 			<ul class="navbar-nav mr-auto">
-				<li class="nav-item active"><a class="nav-link"
-					href="Instagraham_Inc.php">Home <span class="sr-only">(current)</span></a>
+				<li class="nav-item"><a class="nav-link"
+					href="Instagraham_Inc.php" style="color:black;" >Home <span class="sr-only">(current)</span></a>
 				</li>
 				<?php
 				
