@@ -6,7 +6,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="css/Instagraham_style.css">
 <link rel="stylesheet" href="css/bootstrap.min.css">
-<link rel="stylesheet" href="css/geni.css" type="text/css">
 <link rel="stylesheet"
 	href="https://fonts.googleapis.com/css?family=Karma">
 <link rel="stylesheet"
@@ -35,7 +34,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 }
 
 $id = $_SESSION['iduser'];
-$query = mysqli_query($db, "SELECT * FROM users where iduser='$id'") or die(mysqli_error());
+$query = mysqli_query($db, "SELECT * FROM creator where iduser='$id'") or die(mysqli_error());
 $row = mysqli_fetch_array($query);
 ?>
 
@@ -73,7 +72,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Check input errors before updating the database
     if (empty($new_password_err) && empty($confirm_password_err)) {
         // Prepare an update statement
-        $sql = "UPDATE users SET password = ? WHERE iduser = ?";
+        $sql = "UPDATE creator SET password = ? WHERE iduser = ?";
 
         if ($stmt = mysqli_prepare($link, $sql)) {
             // Bind variables to the prepared statement as parameters
@@ -109,7 +108,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
  
 
 <body>
-
 	<!-- Top navigator -->
 	<nav class="navbar navbar-expand-lg navbar-light bg-light">
 		<!-- add logo with link to home page -->
@@ -126,28 +124,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
 			<ul class="navbar-nav mr-auto">
-				<li class="nav-item "><a class="nav-link"
-					href="Instagraham_Inc.php" style="color:black;">Home <span class="sr-only">(current)</span></a>
+				<li class="nav-item "><a class="nav-link" href="Instagraham_Inc.php"
+					style="color: black;">Home <span class="sr-only">(current)</span></a>
 				</li>
 				<?php
     if (isset($_SESSION["iduser"])) {
-        
+
         echo "<li class='nav-item'><a class='nav-link' href='upload-form.php' style='color: black;'>Upload</a></li>";
     }
     ?>
-				<li class="nav-item"><a class="nav-link" href="album.php"
+				<li class="nav-item"><a class="nav-link" href="all-album.php"
 					style="color: black;">Album</a></li>
 				<li class="nav-item dropdown"><a class="nav-link dropdown-toggle"
 					href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
 					aria-haspopup="true" aria-expanded="false" style="color: black;">
 						Account </a>
 					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-						<a class="dropdown-item" href="user-prof.php " 
-							style="color: black;">Profile</a> 
-							<a class="dropdown-item" href="login-test.php" style="color: black;">Login</a> 
-							<a class="dropdown-item" href="logout-test.php" style="color: black;">Logout</a>
+						<a class="dropdown-item" href="user-prof.php" style="color: black;">Profile</a>
+						<a class="dropdown-item" href="login-test.php" style="color: black;">Login</a> 
+						<a class="dropdown-item" href="logout-test.php" style="color: black;">Logout</a>
 						<div class="dropdown-divider"></div>
-						<a class="dropdown-item" href="delete-account-page-test.php" style="color: red;">Delete Account (Login required)</a>
+						<a class="dropdown-item" data-toggle="modal" data-target="#myModal"
+							style="color: red;">Delete Account (Login required)</a>
 					</div></li>
 			</ul>
 			<div class="d-inline-block">
@@ -155,12 +153,44 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     			<?php
                     if (isset($_SESSION["iduser"])) {
                         echo $_SESSION["username"];
-                    }
+                    }else{
+			echo .$getRowAssoc['username'];
+		    }
                     ?>
 			</p>
 			</div>
 		</div>
 	</nav>
+
+	<!-- Modal for delete account-->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+        <?php 
+        /*When in user is logged in in session, delete user account according to iduser*/
+        $id=$_SESSION['iduser'];
+        $q = "SELECT iduser,username FROM creator WHERE iduser = $id";
+        $rs = mysqli_query($db,$q);
+        $getRowAssoc = mysqli_fetch_assoc($rs);
+       
+        echo "<p><h5>Deleting user". "&nbsp;<b>".$getRowAssoc["username"]. "</b>&nbsp;"."from database! Are you sure?"."</h5></p>";
+        echo "<br>";
+        echo "<h5><center><a href = \"delete-account-test.php?id=" . $getRowAssoc["iduser"] . " \" > Delete </a></center></h5>";
+         ?>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
 
 	<!-- edit profile tab -->
 	<div class="content">
@@ -262,7 +292,7 @@ if (isset($_POST['submit-1'])) {
     $email = $_POST['Email'];
     $nickname=$_POST['Nname'];
     $gender=$_POST['Gender'];
-    $query = "UPDATE users SET username = '$username',
+    $query = "UPDATE creator SET username = '$username',
                       email = '$email', nickname='$nickname', gender='$gender'
                       WHERE iduser = '$id'";
     $result = mysqli_query($db, $query) or die(mysqli_error($db));

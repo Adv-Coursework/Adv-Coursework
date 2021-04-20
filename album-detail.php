@@ -87,7 +87,8 @@ body, h1, h2, h3, h4, h5, h6 {
 							<a class="dropdown-item" href="login-test.php" style="color: black;">Login</a> 
 							<a class="dropdown-item" href="logout-test.php" style="color: black;">Logout</a>
 						<div class="dropdown-divider"></div>
-						<a class="dropdown-item" href="delete-account-page-test.php" style="color: red;">Delete Account (Login required)</a>
+						<a class="dropdown-item" data-toggle="modal" data-target="#myModal"
+							style="color: red;">Delete Account (Login required)</a>
 					</div></li>
 			</ul>
 			<div class="d-inline-block">
@@ -102,6 +103,36 @@ body, h1, h2, h3, h4, h5, h6 {
 		</div>
 	</nav>
 
+	<!-- Modal for delete account-->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+        <?php 
+        /*When in user is logged in in session, delete user account according to iduser*/
+        include "connection.php";
+        $id=$_SESSION['iduser'];
+        $q = "SELECT iduser,username FROM creator WHERE iduser = $id";
+        $rs = mysqli_query($db,$q);
+        $getRowAssoc = mysqli_fetch_assoc($rs);
+       
+        echo "<p><h5>Deleting user". "&nbsp;<b>".$getRowAssoc["username"]. "</b>&nbsp;"."from database! Are you sure?"."</h5></p>";
+        echo "<br>";
+        echo "<h5><center><a href = \"delete-account-test.php?id=" . $getRowAssoc["iduser"] . " \" > Delete </a></center></h5>";
+         ?>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
 	
 	<div class="jumbotron">
 		<div class="container d-flex justify-content-between">
@@ -133,10 +164,10 @@ body, h1, h2, h3, h4, h5, h6 {
 	                 echo "<h3>Title: " . $image["title"] . "</h3>";
 	                 echo "<p>Comment: " . $image["comment"] . "</p>";
 	                 if ($image["iduser"] == $_SESSION["iduser"]) {
-	                     echo "<a href = \" edit-detail.php?id=" . $image["idphoto"] . " \" > Click to edit detail </a><br>";
-	                     echo "<a href = \" delete-photo.php?id=" . $image["idphoto"] . " \" > Delete </a><br>";
+	                     echo "<a href = \" edit-detail.php?id=" . $image["idphoto"] . " \" class='btn btn-info' style='margin-bottom:5px;' > Edit detail </a><br>";
+	                     echo "<a href = \" delete-photo.php?id=" . $image["idphoto"] . " \" class='btn btn-info' style='margin-bottom:5px;' > Delete from album and gallery </a><br>";
 	                 }
-	                 echo "<a href = \" album-photo-remove.php?id=" . $image["idphoto"] . " \" > Remove from album</a><br>";
+	                 echo "<a href = \" album-photo-remove.php?id=" . $image["idphoto"] . " \" class='btn btn-warning' style='margin-bottom:5px;' > Remove from album</a><br>";
 	                 echo "</div>\n";
 	             }
 	         } else {
