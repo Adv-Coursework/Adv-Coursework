@@ -111,9 +111,9 @@ foreach ($image_array as $image) {
     echo "</div>\n";
     echo "<h3>Title: " . $image["title"] . "</h3>";
     echo "<p>Comment: " . $image["comment"] . "</p>";
-    echo "<a href = \"album-addphoto-form.php?id=" . $image["idphoto"] . " \" > Add to album </a><br>";
     if (isset($_SESSION["iduser"])) {
         if ($image["iduser"] == $_SESSION["iduser"]){
+            echo "<a href = \"album-addphoto-form.php?id=" . $image["idphoto"] . " \" > Add to album </a><br>";
             echo "<a href = \"edit-detail.php?id=" . $image["idphoto"] . " \" > Click to edit detail </a><br>";
             echo "<a href = \"delete-photo.php?id=" . $image["idphoto"] . " \" > Delete </a><br>";
         }
