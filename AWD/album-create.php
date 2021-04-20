@@ -51,7 +51,7 @@ body, html {
         echo "<li class='nav-item'><a class='nav-link' href='upload-form.php' style='color: black;'>Upload</a></li>";
     }
     ?>
-				<li class="nav-item active"><a class="nav-link" href="all-album.php"
+				<li class="nav-item"><a class="nav-link active" href="all-album.php"
 					style="color: black;">Album</a></li>
 				<li class="nav-item dropdown"><a class="nav-link dropdown-toggle"
 					href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
