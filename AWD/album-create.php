@@ -91,7 +91,7 @@ body, html {
     session_start();
 
     $uploadOk = FALSE;
-
+    
     // retreive user input
     if (isset($_POST["submit"])) {
         $album_name = $_POST["album_name"];
@@ -107,17 +107,17 @@ body, html {
         }
 
         // Create query to update detail according to image id
-        $q = "INSERT INTO album (title,iduser) VALUES ('" . $album_name . "', " . $_SESSION['iduser'] . ") ";
+        $q = "INSERT INTO album (title,iduser,imageurl) VALUES ('" . $album_name . "', " . $_SESSION['iduser'] . ", 'uploads/default-thumbnail.jpg')";
 
         // If query executed or failed to do so
         if ($mysqli->query($q)) {
             echo "<p>Album: " . $album_name . "  created.</p>";
         } else {
-            echo "<p>Something went wrong11111. Please contact your system adminstrator.</p>";
+            echo "<p>Something went wrong. Please contact your system adminstrator.</p>";
 		    var_dump($mysqli->error);
         }
     } else {
-        echo "<p>Something went wrong222. Please contact your system adminstrator.</p>";
+        echo "<p>Something went wrong. Please contact your system adminstrator.</p>";
     }
 
     ?>

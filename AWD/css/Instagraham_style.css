@@ -254,3 +254,11 @@ hr.footer-line {
 	padding:5px 5px;
 	font-size:15px;
 }
+
+#card-frame{
+	height: 200px;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+}

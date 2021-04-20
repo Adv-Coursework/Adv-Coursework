@@ -169,14 +169,17 @@ if (isset($_SESSION["iduser"])) {
         if ($res->data_seek(0)) {
             $album_array = array();
             while ($rows = $res->fetch_assoc()) {
-                $album_array[] = $rows;
+                $album_array[]   = $rows;
             }
             //fetch albums from db if user has albums
             foreach ($album_array as $album) {
-                echo "<div class=\"col-4\" >\n";
+                echo "<div class=\"col-4\" style='padding-bottom:20px;'>\n";
                 echo "<div class='card'>";
                 // thumbnail
-                echo "<img class='card-img-top' src='" . $album['imageurl'] . "' alt='Thumbnail for " . $album['title'] . "'>";
+                echo "<div id='card-frame'>";
+                echo "<img class='card-img-top' src='" . $album['imageurl'] . "' alt='Thumbnail for " . $album['title'] . "' style='height: 100%; width: 100%; object-fit: cover;'>";
+                echo "</div>";
+                // title and buttons 
                 echo "<div class='card-body'>";
                 // album title
                 echo "<h5 class='card-title'> " . $album['title'] . " </h5>";
