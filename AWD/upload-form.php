@@ -88,12 +88,12 @@ body, html {
 			<form action="upload.php" method="post" enctype="multipart/form-data">
 
 				<p>
-					Select Photo to upload: <input type="file" name="fileToUpload"
-						id="fileToUpload">
+					Select Photo to upload: 
+					<input type="file" name="fileToUpload" id="fileToUpload">
 				</p>
 				<p>
-					<label>Comment/Caption:</label> <input type="text" id="comment"
-						name="comment">
+					<label>Comment/Caption:</label> 
+					<input type="text" id="comment"	name="comment">
 				</p>
 				<p>
 					<input type="submit" value="Upload Photo" name="submit">

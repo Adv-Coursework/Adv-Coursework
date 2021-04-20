@@ -18,23 +18,23 @@ body, h1, h2, h3, h4, h5, h6 {
 <?php
 session_start();
 // Get parameter value from url
-$imageid = htmlspecialchars($_GET["id"]);
+$albumid = htmlspecialchars($_GET["id"]);
 
-// Retrieve image detail - from view-photo.php
+// Retrieve image detail
 $mysqli = new mysqli("localhost", "root", "", "5114asst1");
 if ($mysqli->connect_errno) {
     echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
 }
 
 // Retrieve data from user
-if ($res = $mysqli->query("SELECT title,imageurl,comment,iduser FROM photo WHERE idphoto =" . $imageid . ";")) {
+if ($res = $mysqli->query("SELECT title,imageurl,idalbum,iduser FROM album WHERE idalbum = " . $albumid . ";")) {
     if ($res->data_seek(0)) {
-        $image = array();
+//         $album_array = array();
         while ($rows = $res->fetch_assoc()) {
-            $image = $rows;
+            $album_array = $rows;
         }
     } else {
-        echo "No photo found";
+        echo "No album detail found";
     }
 } else {
     echo "Query error: please contact your system adminstrator.";
@@ -58,7 +58,7 @@ if ($res = $mysqli->query("SELECT title,imageurl,comment,iduser FROM photo WHERE
 
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
 			<ul class="navbar-nav mr-auto">
-				<li class="nav-item active"><a class="nav-link"
+				<li class="nav-item "><a class="nav-link"
 					href="Instagraham_Inc.php">Home <span class="sr-only">(current)</span></a>
 				</li>
 				<?php
@@ -68,7 +68,7 @@ if ($res = $mysqli->query("SELECT title,imageurl,comment,iduser FROM photo WHERE
         echo "<li class='nav-item'><a class='nav-link' href='upload-form.php' style='color: black;'>Upload</a></li>";
     }
     ?>
-				<li class="nav-item"><a class="nav-link" href="all-albums.php"
+				<li class="nav-item"><a class="nav-link active" href="all-albums.php"
 					style="color: black;">Album</a></li>
 				<li class="nav-item dropdown"><a class="nav-link dropdown-toggle"
 					href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
@@ -95,26 +95,22 @@ if ($res = $mysqli->query("SELECT title,imageurl,comment,iduser FROM photo WHERE
 		</div>
 	</nav>
 
-	<div id="edit-container">    
-        <!--Display photo-->
-		<img src="<?= $image["imageurl"]?>" alt="<?=$image["title"]?>"
-			height="600" />
+	<div class="container">    
+        <!--Display album details-->
+        <!-- edit username & email tab content -->
+		<div id="album-edit" class="row">
+			<form action="album-thumbnail-upload.php" method="post" enctype="multipart/form-data">
+				<h3>Edit Album</h3>
+				<label>Album title :</label> 
+				<input type="text" id="title" name="title" value="<?= $album_array["title"]?>"><br> <br> 
+				<label>Upload a thumbnail :</label> 
+				<input type="file" name="fileToUpload" id="fileToUpload">
+				<br><input type="submit" value="Update album" name="submit">
+				<input type="hidden" id="id" name="albumid" value="<?=$albumid?>">
+			</form>
+		</div>
+	</div>	
 
-		<!--Obtain data from user for updating purpsoe-->
-		<!--Create a form for user input-->
-		<div id="edit-input-container">
-		<form action="update-detail.php" method="post" enctype="multipart/form-data">
-			<label>Title:</label><br> <input required type="text" id="title" name="title" value="<?=$image["title"]?>"><br> 
-			<label>Comment:</label><br>
-			<input type="text" id="comment" name="comment" value="<?= $image["comment"]?>"> 
-			<input type="submit" name="submit" value="submit"> 
-			<input type="hidden" id="id" name="id" value="<?=$imageid?>">
-			<input type="hidden" id="iduser" name="iduser" value="<?=$image["iduser"]?>">
-			
-		</form>
-		</div>	
-
-	</div>
 	<script src="js/jquery-3.6.0.slim.min.js"></script>
 	<script src="js/popper.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>

@@ -102,11 +102,12 @@ body, h1, h2, h3, h4, h5, h6 {
 		</div>
 	</nav>
 
-
+	
 	<div class="jumbotron">
 		<div class="container d-flex justify-content-between">
 			<h2>  <?php echo $album['title'];?>	</h2>
-			<a class="btn btn-primary" href="!#">Edit album detail</a>
+			
+			<a class="btn btn-primary" href=<?php echo "album-edit.php?id=".$album['idalbum']."" ?>>Edit album detail</a>
 		</div>
 	</div>
 	
