@@ -154,7 +154,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     if (isset($_SESSION["iduser"])) {
                         echo $_SESSION["username"];
                     }else{
-			echo .$getRowAssoc['username'];
+			echo $getRowAssoc['username'];
 		    }
                     ?>
 			</p>
