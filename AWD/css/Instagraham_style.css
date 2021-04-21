@@ -233,13 +233,16 @@ hr.footer-line {
 /* Style the tab content */
 .tabcontent {
   float: left;
-  padding:0 100px;
-  padding-bottom:30px;
+  padding:15px 25px;
   border: 1px solid #ccc;
   width: 60%;
   border-left: none;
   height: auto;
   font-size: 18px;
+  padding: 15px 20px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 /*input text css*/
@@ -261,4 +264,14 @@ hr.footer-line {
     display: flex;
     flex-wrap: wrap;
     margin-bottom: 10px;
+}
+
+.profile-content {
+	margin-top: 30px;
+	margin-left: auto;
+	margin-right: auto;
+	width: 70%;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
 }

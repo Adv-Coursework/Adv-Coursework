@@ -9,20 +9,6 @@ if ($mysqli->connect_errno) {
     echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
 }
 
-// Retrieve data
-if ($res = $mysqli->query("SELECT title,comment,imageurl,idphoto, iduser FROM photo;")) {
-    if ($res->data_seek(0)) {
-        $image_array = array();
-        while ($rows = $res->fetch_assoc()) {
-            $image_array[] = $rows;
-        }
-    } else {
-        echo "No photo found";
-    }
-} else {
-    echo "Query error: please contact your system adminstrator.";
-}
-
 ?>
 
 <html>
@@ -62,12 +48,11 @@ body, h1, h2, h3, h4, h5, h6 {
 					href="Instagraham_Inc.php" style="color:black;">Home <span class="sr-only">(current)</span></a>
 				</li>
 				<?php
-				
-    if (isset($_SESSION["iduser"])) {
-        
-        echo "<li class='nav-item'><a class='nav-link' href='upload-form.php' style='color: black;'>Upload</a></li>";
-    }
-    ?>
+                if (isset($_SESSION["iduser"])) {
+                    
+                    echo "<li class='nav-item'><a class='nav-link' href='upload-form.php' style='color: black;'>Upload</a></li>";
+                }
+               ?>
 				<li class="nav-item"><a class="nav-link" href="all-albums.php"
 					style="color: black;">Album</a></li>
 	
@@ -75,16 +60,25 @@ body, h1, h2, h3, h4, h5, h6 {
 					href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
 					aria-haspopup="true" aria-expanded="false" style="color: black;">
 						Account </a>
+					
+					<!-- display different dropdown item based on guest/logged in user -->
 					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
 						<?php 
 						if (isset($_SESSION["iduser"])) {
 						    echo "<a class='dropdown-item' href='user-prof.php' style='color: black;''>Profile</a> ";
+						    echo "<div class='dropdown-divider'></div>";						    
+						}
+						
+						if (empty($_SESSION["iduser"])) {
+						    echo "<a class='dropdown-item' href='login-test.php' style='color: black;''>Login</a> ";
+						}
+						
+						if (isset($_SESSION["iduser"])) {
+						    echo "<a class='dropdown-item' href='logout-test.php' style='color: black;''>Logout</a>";
 						}
 						?>
-							<a class="dropdown-item" href="login-test.php" style="color: black;">Login</a> 
-							<a class="dropdown-item" href="logout-test.php" style="color: black;">Logout</a>
-						<div class="dropdown-divider"></div>
-						<a class="dropdown-item" href="delete-account-page-test.php" style="color: red;">Delete Account (Login required)</a>
+							
+						
 					</div></li>
 			</ul>
 			<div class="d-inline-block">
@@ -104,24 +98,40 @@ body, h1, h2, h3, h4, h5, h6 {
 
 	<div class="content">
 	 <?php
-foreach ($image_array as $image) {
-    echo "<div class=\"photo-container\" >\n";
-    echo "<div class=\"photo-frame\" >\n";
-    echo "<img class=\"photo\" src = \"" . $image["imageurl"] . "\" alt= \"" . $image["title"] . "\" />";
-    echo "</div>\n";
-    echo "<h3>Title: " . $image["title"] . "</h3>";
-    echo "<p>Comment: " . $image["comment"] . "</p>";
-    if (isset($_SESSION["iduser"])) {
-        echo "<a href = \"album-addphoto-form.php?id=" . $image["idphoto"] . " \" class='btn btn-success' style='margin-bottom:5px;' > Add to album </a><br>";
-        if ($image["iduser"] == $_SESSION["iduser"]){
-            echo "<div class='btn-group'>";
-            echo "<a href = \"edit-detail.php?id=" . $image["idphoto"] . " \" class='btn btn-secondary' > Edit Detail </a><br>";
-            echo "<a href = \"delete-photo.php?id=" . $image["idphoto"] . " \" class='btn btn-secondary' > Delete </a><br>";
-            echo "</div>";
-        }
-    }
-    echo "</div>\n";
-}
+	 
+	 // Retrieve data
+	 if ($res = $mysqli->query("SELECT title,comment,imageurl,idphoto, iduser FROM photo;")) {
+	     if ($res->data_seek(0)) {
+	         $image_array = array();
+	         while ($rows = $res->fetch_assoc()) {
+	             $image_array[] = $rows;
+	         }
+	         foreach ($image_array as $image) {
+	             echo "<div class=\"photo-container\" >\n";
+	             echo "<div class=\"photo-frame\" >\n";
+	             echo "<img class=\"photo\" src = \"" . $image["imageurl"] . "\" alt= \"" . $image["title"] . "\" />";
+	             echo "</div>\n";
+	             echo "<h3>Title: " . $image["title"] . "</h3>";
+	             echo "<p>Comment: " . $image["comment"] . "</p>";
+	             if (isset($_SESSION["iduser"])) {
+	                 echo "<a href = \"album-addphoto-form.php?id=" . $image["idphoto"] . " \" class='btn btn-success' style='margin-bottom:5px;' > Add to album </a><br>";
+	                 if ($image["iduser"] == $_SESSION["iduser"]){
+	                     echo "<div class='btn-group'>";
+	                     echo "<a href = \"edit-detail.php?id=" . $image["idphoto"] . " \" class='btn btn-secondary' > Edit Detail </a><br>";
+	                     echo "<a href = \"delete-photo.php?id=" . $image["idphoto"] . " \" class='btn btn-secondary' > Delete </a><br>";
+	                     echo "</div>";
+	                 }
+	             }
+	             echo "</div>\n";
+	         }
+	     } else {
+	         echo "No photo found";
+	     }
+	 } else {
+	     echo "Query error: please contact your system adminstrator.";
+	 }
+	 
+
 ?>
 	</div>
 	<!-- Footer -->
@@ -151,7 +161,5 @@ foreach ($image_array as $image) {
 	<script src="js/jquery-3.6.0.slim.min.js"></script>
 	<script src="js/popper.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
-
-
 </body>
 </html>

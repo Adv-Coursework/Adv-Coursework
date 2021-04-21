@@ -12,7 +12,8 @@
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <style>
 body, h1, h2, h3, h4, h5, h6 {
-	font-family: "Karma", sans-serif
+	font-family: "Karma", sans-serif;
+	overflow:hidden;
 }
 
 body, html {
@@ -106,7 +107,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 ?>
  
-
 <body>
 	<!-- Top navigator -->
 	<nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -124,43 +124,57 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
 			<ul class="navbar-nav mr-auto">
-				<li class="nav-item "><a class="nav-link" href="Instagraham_Inc.php"
-					style="color: black;">Home <span class="sr-only">(current)</span></a>
+				<li class="nav-item"><a class="nav-link"
+					href="Instagraham_Inc.php" style="color:black;">Home <span class="sr-only">(current)</span></a>
 				</li>
 				<?php
-    if (isset($_SESSION["iduser"])) {
-
-        echo "<li class='nav-item'><a class='nav-link' href='upload-form.php' style='color: black;'>Upload</a></li>";
-    }
-    ?>
-				<li class="nav-item"><a class="nav-link" href="all-album.php"
+                    if (isset($_SESSION["iduser"])) {
+                        
+                        echo "<li class='nav-item'><a class='nav-link' href='upload-form.php' style='color: black;'>Upload</a></li>";
+                    }
+                    ?>
+				<li class="nav-item"><a class="nav-link" href="all-albums.php"
 					style="color: black;">Album</a></li>
+	
 				<li class="nav-item dropdown"><a class="nav-link dropdown-toggle"
 					href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
 					aria-haspopup="true" aria-expanded="false" style="color: black;">
 						Account </a>
+						
+					 <!-- display different dropdown item based on guest/logged in user -->
 					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-						<a class="dropdown-item" href="user-prof.php" style="color: black;">Profile</a>
-						<a class="dropdown-item" href="login-test.php" style="color: black;">Login</a> 
-						<a class="dropdown-item" href="logout-test.php" style="color: black;">Logout</a>
-						<div class="dropdown-divider"></div>
-						<a class="dropdown-item" data-toggle="modal" data-target="#myModal"
-							style="color: red;">Delete Account (Login required)</a>
+						<?php 
+						if (isset($_SESSION["iduser"])) {
+						    echo "<a class='dropdown-item' href='user-prof.php' style='color: black;''>Profile</a> ";
+						    echo "<div class='dropdown-divider'></div>";						    
+						}
+						
+						if (empty($_SESSION["iduser"])) {
+						    echo "<a class='dropdown-item' href='login-test.php' style='color: black;''>Login</a> ";
+						}
+						
+						if (isset($_SESSION["iduser"])) {
+						    echo "<a class='dropdown-item' href='logout-test.php' style='color: black;''>Logout</a>";
+						}
+						?>
+							
+						
 					</div></li>
 			</ul>
 			<div class="d-inline-block">
 				<p style="margin: 0px"> Welcome,
-                    			<?php
-                    if (isset($_SESSION["iduser"])) {
-                        echo $_SESSION["username"];
-                    }else{
-                        echo "guest user!";
-		    }
-                    ?>
+			<?php
+            if (isset($_SESSION["iduser"])) {
+                echo $_SESSION["username"];
+            } else{
+                echo "guest user!";
+            }
+            ?>
 			</p>
 			</div>
 		</div>
 	</nav>
+
 
 	<!-- Modal for delete account-->
   <div class="modal fade" id="myModal" role="dialog">
@@ -188,12 +202,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         </div>
       </div>
-      
     </div>
   </div>
 
 	<!-- edit profile tab -->
-	<div class="content">
+
+	<div class="container" style="width:70%; margin-top: 40px;" >
+	<div class="row" style="display: flex; flex-wrap: wrap; justify-content: center;">
 		<div class="tab">
 			<button class="tablinks" onclick="openStatus(event, 'edit-profile')"
 				id="defaultOpen">Edit Profile</button>
@@ -218,7 +233,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 		</div>
 
 		<!-- edit password tab content -->
-		<div id="edit-passwrd" class="tabcontent">
+		<div id="edit-passwrd" class="tabcontent" style="padding: 15px 20px;">
 			<form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>"
 				method="post">
 				<h3>Edit Password</h3>
@@ -230,8 +245,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 				<br> <input type="submit" class="user-submit" value="Submit">
 			</form>
 		</div>
+		</div>
 </div>
 
+<?php 
+echo "<a class='btn btn-danger offset-8' style='margin-top:10px;' href='delete-account-test.php?id=" . $_SESSION['iduser'] . "'>Delete Account</a>";
+?>
+
+		
 		<!--tab function-->
 		<script>
 function openStatus(evt, statusName) {
@@ -251,9 +272,6 @@ function openStatus(evt, statusName) {
 // Get the element with id="defaultOpen" and click on it
 document.getElementById("defaultOpen").click();
 </script>
-
-		<!--validate password-->
-
 
 		<!-- Footer -->
 		<!-- Footer boarderline -->
@@ -297,10 +315,10 @@ if (isset($_POST['submit-1'])) {
                       WHERE iduser = '$id'";
     $result = mysqli_query($db, $query) or die(mysqli_error($db));
        ?>
-<script type="text/javascript">
+	<script type="text/javascript">
             alert("Update Successfull.");
             window.location = "edit-acc.php";
-        </script>
+     </script>
 <?php
 }
 ?>

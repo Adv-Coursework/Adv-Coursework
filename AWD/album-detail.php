@@ -49,10 +49,10 @@ body, h1, h2, h3, h4, h5, h6 {
 
 </head>
 <body>
-		<!-- Top navigator -->
+	<!-- Top navigator -->
 	<nav class="navbar navbar-expand-lg navbar-light bg-light">
 		<!-- add logo with link to home page -->
-		<a class="navbar-brand" style="width: 10%;" href="Instagraham_Inc.php" ><img
+		<a class="navbar-brand" style="width: 10%;" href="Instagraham_Inc.php"><img
 			src="InstagrahamInc.png" alt="InstagrahamInc_Logo"
 			style="width: 100%; object-fit: contain;"></a>
 		<!-- responsive collapse navbar -->
@@ -65,7 +65,7 @@ body, h1, h2, h3, h4, h5, h6 {
 
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
 			<ul class="navbar-nav mr-auto">
-				<li class="nav-item "><a class="nav-link"
+				<li class="nav-item"><a class="nav-link"
 					href="Instagraham_Inc.php" style="color:black;">Home <span class="sr-only">(current)</span></a>
 				</li>
 				<?php
@@ -75,19 +75,31 @@ body, h1, h2, h3, h4, h5, h6 {
         echo "<li class='nav-item'><a class='nav-link' href='upload-form.php' style='color: black;'>Upload</a></li>";
     }
     ?>
-				<li class="nav-item"><a class="nav-link active" href="all-albums.php"
+				<li class="nav-item active"><a class="nav-link" href="all-albums.php"
 					style="color: black;">Album</a></li>
+	
 				<li class="nav-item dropdown"><a class="nav-link dropdown-toggle"
 					href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
 					aria-haspopup="true" aria-expanded="false" style="color: black;">
 						Account </a>
+					<!-- display different dropdown item based on guest/logged in user -->
 					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-						<a class="dropdown-item" href="user-prof.php"
-							style="color: black;">Profile</a> 
-							<a class="dropdown-item" href="login-test.php" style="color: black;">Login</a> 
-							<a class="dropdown-item" href="logout-test.php" style="color: black;">Logout</a>
-						<div class="dropdown-divider"></div>
-						<a class="dropdown-item" href="delete-account-page-test.php" style="color: red;">Delete Account (Login required)</a>
+						<?php 
+						if (isset($_SESSION["iduser"])) {
+						    echo "<a class='dropdown-item' href='user-prof.php' style='color: black;''>Profile</a> ";
+						    echo "<div class='dropdown-divider'></div>";						    
+						}
+						
+						if (empty($_SESSION["iduser"])) {
+						    echo "<a class='dropdown-item' href='login-test.php' style='color: black;''>Login</a> ";
+						}
+						
+						if (isset($_SESSION["iduser"])) {
+						    echo "<a class='dropdown-item' href='logout-test.php' style='color: black;''>Logout</a>";
+						}
+						?>
+							
+						
 					</div></li>
 			</ul>
 			<div class="d-inline-block">
@@ -95,6 +107,8 @@ body, h1, h2, h3, h4, h5, h6 {
 			<?php
             if (isset($_SESSION["iduser"])) {
                 echo $_SESSION["username"];
+            } else{
+                echo "guest user!";
             }
             ?>
 			</p>
