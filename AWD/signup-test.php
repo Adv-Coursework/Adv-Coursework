@@ -105,7 +105,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <link rel="stylesheet" href="css/Instagraham_style.css">
 <link rel="stylesheet" href="css/bootstrap.min.css">
-<link rel="stylesheet" href="css/geni.css" type="text/css">
 <style>
 body {
 	font: 14px sans-serif;

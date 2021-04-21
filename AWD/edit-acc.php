@@ -6,7 +6,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="css/Instagraham_style.css">
 <link rel="stylesheet" href="css/bootstrap.min.css">
-<link rel="stylesheet" href="css/geni.css" type="text/css">
 <link rel="stylesheet"
 	href="https://fonts.googleapis.com/css?family=Karma">
 <link rel="stylesheet"
@@ -155,7 +154,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     if (isset($_SESSION["iduser"])) {
                         echo $_SESSION["username"];
                     }else{
-			echo "guest user!";
+			echo .$getRowAssoc['username'];
 		    }
                     ?>
 			</p>

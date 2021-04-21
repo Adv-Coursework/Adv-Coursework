@@ -1,4 +1,3 @@
-
 <?php
 // Initialize the session
 session_start();
@@ -20,7 +19,7 @@ session_destroy();
 
 // Redirect to login page
 $message = 'Logged out succesfully.';
-echo "<script>alert('$message') 
+echo "<script>alert('$message')
 window.location.replace('Instagraham_Inc.php');
 </script>";
 exit;
